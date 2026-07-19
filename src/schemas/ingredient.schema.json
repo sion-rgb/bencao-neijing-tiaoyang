@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ingredient.schema.json",
+  "title": "Ingredient",
+  "type": "object",
+  "required": ["id", "name", "nature", "traditionalUse", "suitablePatterns", "unsuitablePatterns", "pregnancyRestriction", "g6pdRestriction", "diabetesRestriction", "liverKidneyRestriction", "interactionNote", "allergyNote", "suggestedForm", "maxDuration", "classicSource", "contraindicationFlags", "safetyComplete", "reviewStatus"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 }, "nature": { "type": "string", "minLength": 1 }, "traditionalUse": { "type": "string", "minLength": 1 },
+    "suitablePatterns": { "type": "array", "items": { "type": "string" } }, "unsuitablePatterns": { "type": "array", "items": { "type": "string" } },
+    "pregnancyRestriction": { "type": "string", "minLength": 1 }, "g6pdRestriction": { "type": "string", "minLength": 1 }, "diabetesRestriction": { "type": "string", "minLength": 1 }, "liverKidneyRestriction": { "type": "string", "minLength": 1 }, "interactionNote": { "type": "string", "minLength": 1 }, "allergyNote": { "type": "string", "minLength": 1 }, "suggestedForm": { "type": "string", "minLength": 1 }, "maxDuration": { "type": "string", "minLength": 1 }, "classicSource": { "type": "string", "minLength": 1 },
+    "contraindicationFlags": { "type": "array", "items": { "type": "string" } }, "safetyComplete": { "const": true }, "reviewStatus": { "enum": ["draft", "tcm-reviewed", "safety-reviewed", "approved"] }
+  },
+  "additionalProperties": false
+}

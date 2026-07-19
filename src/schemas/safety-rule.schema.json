@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "safety-rule.schema.json",
+  "title": "SafetyQuestion",
+  "type": "object",
+  "required": ["id", "prompt", "required", "options", "reviewStatus"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 }, "prompt": { "type": "string", "minLength": 1 }, "required": { "const": true }, "multiple": { "type": "boolean" }, "reviewStatus": { "enum": ["draft", "tcm-reviewed", "safety-reviewed", "approved"] },
+    "options": { "type": "array", "minItems": 2, "items": { "type": "object", "required": ["id", "label", "flags"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "flags": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } }
+  },
+  "additionalProperties": false
+}
