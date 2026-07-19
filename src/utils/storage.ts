@@ -10,6 +10,9 @@ export const EMPTY_STATE: StoredState = {
   updatedAt: new Date(0).toISOString()
 };
 
+export const MIGRATION_NOTICE_KEY = "bencao-neijing-migration-v2";
+export const MIGRATION_NOTICE = "問卷及分析規則已更新，舊有分析資料已清除，請重新完成問卷。";
+
 export function loadState(): StoredState {
   try {
     const raw = localStorage.getItem(APP_CONFIG.storageKey);
@@ -17,7 +20,8 @@ export function loadState(): StoredState {
     const value = JSON.parse(raw) as StoredState;
     if (value.schemaVersion !== APP_CONFIG.storageVersion) {
       localStorage.removeItem(APP_CONFIG.storageKey);
-      return { ...EMPTY_STATE };
+      localStorage.setItem(MIGRATION_NOTICE_KEY, "1");
+      return { ...EMPTY_STATE, consent: Boolean(value.consent) };
     }
     return { ...EMPTY_STATE, ...value };
   } catch {
@@ -31,8 +35,13 @@ export function saveState(state: StoredState) {
 }
 
 export function clearAllLocalData() {
-  localStorage.clear();
+  localStorage.removeItem(APP_CONFIG.storageKey);
+  localStorage.removeItem(MIGRATION_NOTICE_KEY);
+  localStorage.removeItem("bencao-neijing-result");
 }
+
+export const hasMigrationNotice = () => localStorage.getItem(MIGRATION_NOTICE_KEY) === "1";
+export const dismissMigrationNotice = () => localStorage.removeItem(MIGRATION_NOTICE_KEY);
 
 export function exportResult(value: unknown) {
   const blob = new Blob([JSON.stringify(value, null, 2)], { type: "application/json" });

@@ -1,0 +1,137 @@
+{
+  "documentId": "zhongyi-neike-fangji-suoyin",
+  "sourceFileName": "中医内科方剂索引-古籍典藏-luckclub.pdf",
+  "bookTitle": "中醫內科方劑索引",
+  "rightsStatus": "public-domain",
+  "publishable": true,
+  "sourceFileHash": "b8e6c399636c4e9c6fd866c0b115e229aa025c20c3c03506c1d54bb41ccbb4d9",
+  "pageCount": 57,
+  "textLayerPages": 57,
+  "processedPages": 57,
+  "publishableAncientTextPages": 39,
+  "excludedPages": [
+    {
+      "page": 1,
+      "reasons": [
+        "封面／目錄／出版版面"
+      ]
+    },
+    {
+      "page": 2,
+      "reasons": [
+        "封面／目錄／出版版面"
+      ]
+    },
+    {
+      "page": 3,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 4,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 7,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 11,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 16,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 21,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 25,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 29,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 33,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 42,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 46,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 50,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 52,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 54,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 56,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 57,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    }
+  ],
+  "productionEntryCount": 675,
+  "sectionCount": 671,
+  "herbCount": 94,
+  "formulaCount": 661,
+  "publicationRule": "只發布可追溯至古籍的方名、古籍書名及固定組成；排除現代方、編者說明、白話及索引編排文字。",
+  "importedAt": "2026-07-20T00:00:00.000Z",
+  "toolVersion": "2.0.0",
+  "reviewStatus": "approved",
+  "rightsAssessment": {
+    "scanRedistributionAllowed": false,
+    "ancientTextPublicationAllowed": true,
+    "containsModernCommentary": true,
+    "modernCommentaryPublicationAllowed": false,
+    "decisionReason": "PDF 掃描／排版不公開；只發布已明確分離、可追溯頁碼的公有領域古籍文字或古方事實資料，白話、註釋、導言及現代啟示全部排除。"
+  }
+}

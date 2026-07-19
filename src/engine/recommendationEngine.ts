@@ -22,12 +22,13 @@ export function getAllowedIngredients(pattern: PatternId, safety: SafetyAssessme
 
 const hasSelectedOption = (answers: AnswerMap, optionId: string) => Object.values(answers).some((selected) => selected.includes(optionId));
 
-export const isFormulaApprovedForProduction = (formula: FormulaDefinition) => formula.reviewStatus === "approved" && formula.safetyComplete;
+export const isFormulaApprovedForProduction = (formula: FormulaDefinition) => formula.reviewStatus === "approved" && formula.safetyComplete && formula.sourceVerified;
 
 export function getApprovedFormulas(pattern: PatternId, answers: AnswerMap, safety: SafetyAssessment): SelectedFormula[] {
   if (!safety.allowApprovedFormulas || safety.level !== 3) return [];
   return formulas
     .filter(isFormulaApprovedForProduction)
+    .filter((formula) => formula.displayMode === "automated")
     .filter((formula) => formula.suitablePatterns.includes(pattern))
     .filter((formula) => formula.exclusionFlags.every((flag) => !safety.flags.includes(flag)))
     .filter((formula) => !safety.flags.includes("glucoseMedicine") || formula.medicationSafety.diabetesMedicationReviewed)

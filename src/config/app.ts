@@ -1,10 +1,10 @@
 export const APP_CONFIG = {
   name: "本草內經・體質調養",
   subtitle: "根據傳統中醫經典整理的體質與養生參考工具",
-  version: "1.1.0",
+  version: "2.0.0",
   lastUpdated: "2026-07-20",
   storageKey: "bencao-neijing-state",
-  storageVersion: 1,
+  storageVersion: 2,
   productionMode: import.meta.env.PROD
 } as const;
 

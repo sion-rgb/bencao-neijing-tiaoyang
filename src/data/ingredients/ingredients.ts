@@ -1,4 +1,39 @@
-import type { Ingredient } from "../../types";
+import type { Ingredient, PatternId } from "../../types";
+
+const reviewedFood = (id: string, name: string, nature: string, suitablePatterns: PatternId[], classicSource: string): Ingredient => ({
+  id, name, nature,
+  traditionalUse: "只作固定食物組合中的普通食材方向，不作藥物、療效或治病宣稱。",
+  suitablePatterns,
+  unsuitablePatterns: [],
+  pregnancyRestriction: "懷孕或餵哺母乳時只按一般膳食及專業建議選擇；本工具不提供個人份量。",
+  g6pdRestriction: "G6PD 缺乏症如有疑問，先按個人食物禁忌及專業指示處理。",
+  diabetesRestriction: "含碳水化合物或天然糖分的食材須計入既有糖尿病膳食安排；不作降血糖用途。",
+  liverKidneyRestriction: "需限制鉀、磷、糖分、液體或其他營養素者，應按醫護或營養師指示。",
+  interactionNote: "普通食物仍可能受過敏、疾病及既有飲食安排影響；不替代藥物。",
+  allergyNote: "曾對該食物敏感，或食後出現皮疹、氣促、腫脹或持續腸胃不適者停止並求助。",
+  suggestedForm: "徹底煮熟並作均衡膳食的一部分；不濃縮、不提供療程或克數。",
+  maxDuration: "作日常食物輪替，不作固定療程。",
+  classicSource,
+  contraindicationFlags: [],
+  safetyComplete: true,
+  reviewStatus: "approved"
+});
+
+const knowledgeOnlyIngredient = (id: string, name: string, suitablePatterns: PatternId[], classicSource: string): Ingredient => ({
+  id, name, nature: "只讀古方知識欄位；不作自用藥性判斷。",
+  traditionalUse: "只用於展示古方固定組成，不進入自動配伍建議。",
+  suitablePatterns, unsuitablePatterns: [],
+  pregnancyRestriction: "孕哺期不建議；本工具不作個別評估。",
+  g6pdRestriction: "G6PD 缺乏症不由本工具建議任何此類藥材。",
+  diabetesRestriction: "糖尿病或使用胰島素／降血糖藥時不由本工具建議。",
+  liverKidneyRestriction: "肝腎疾病不由本工具建議。",
+  interactionNote: "可能與藥物、出血風險或手術安排相關；只可由合資格專業人士評估。",
+  allergyNote: "任何不適均應停止並求助。",
+  suggestedForm: "只讀古方知識，不提供用法或份量。",
+  maxDuration: "不提供療程。", classicSource,
+  contraindicationFlags: ["pregnant", "breastfeeding", "anticoagulant", "upcomingSurgery", "polypharmacy", "glucoseMedicine", "insulinUse"],
+  safetyComplete: true, reviewStatus: "approved"
+});
 
 export const ingredients: Ingredient[] = [
   {
@@ -140,5 +175,26 @@ export const ingredients: Ingredient[] = [
     contraindicationFlags: ["glucoseMedicine", "kidneyDisease"],
     safetyComplete: true,
     reviewStatus: "approved"
-  }
+  },
+  reviewedFood("rice", "米類", "日常穀物", ["balanced", "qiDeficiency", "spleenQiDeficiency", "spleenYangDeficiency", "yangDeficiency"], "《本草綱目》穀部粳米資料，PDF 第176頁；只引用食材名稱及古籍分類。"),
+  reviewedFood("lotus_seed", "蓮子", "傳統記載甘、平", ["balanced", "qiDeficiency", "spleenQiDeficiency"], "《神農本草經》及《本草綱目》可追溯條目；只作食材文化依據。"),
+  reviewedFood("foxnut", "芡實", "傳統記載甘、平", ["spleenQiDeficiency", "spleenYangDeficiency"], "《本草綱目》果部芡實資料；只作食材文化依據。"),
+  reviewedFood("red_date", "大棗", "傳統記載甘、平", ["qiDeficiency", "bloodDeficiency", "spleenQiDeficiency"], "《神農本草經》大棗條目，PDF 第62頁。"),
+  reviewedFood("adzuki_bean", "赤小豆", "日常豆類", ["phlegmDampness", "dampHeat"], "《神農本草經》及《本草綱目》赤小豆資料；只作食材文化依據。"),
+  reviewedFood("winter_melon", "冬瓜", "日常瓜菜", ["phlegmDampness", "dampHeat"], "《本草綱目》菜部冬瓜資料；只作食材文化依據。"),
+  reviewedFood("pear", "梨", "含水分的普通水果", ["yinDeficiency", "fluidDeficiency"], "《本草綱目》果部梨資料；只作食材文化依據。"),
+  reviewedFood("black_sesame", "黑芝麻", "日常種子食物", ["bloodDeficiency", "fluidDeficiency"], "《本草綱目》穀部胡麻資料；只作食材文化依據。"),
+  reviewedFood("longan", "龍眼肉", "含天然糖分的普通食物", ["bloodDeficiency", "qiDeficiency"], "《本草綱目》果部龍眼資料；只作食材文化依據。"),
+  reviewedFood("mung_bean", "綠豆", "日常豆類", ["dampHeat"], "《本草綱目》穀部綠豆資料；只作食材文化依據。"),
+  reviewedFood("oat", "燕麥", "日常穀物", ["balanced", "qiStagnation"], "產品固定普通食物規則；不冒充古方或古籍原方。"),
+  reviewedFood("chestnut", "栗子", "日常堅果／澱粉食物", ["yangDeficiency", "spleenYangDeficiency"], "《本草綱目》果部栗資料；只作食材文化依據。"),
+  reviewedFood("rose", "玫瑰花", "食用花材", ["qiStagnation"], "只作產品設定的食材文化條目，不冒充古方；服藥及孕哺期不自動顯示。"),
+  reviewedFood("black_bean", "黑豆", "日常豆類", ["bloodStasis", "bloodDeficiency"], "《本草綱目》穀部黑大豆資料；只作食材文化依據。"),
+  reviewedFood("hawthorn", "山楂", "酸味普通食材", ["bloodStasis", "qiStagnation"], "《本草綱目》果部山楂資料；只作食材文化依據，不作活血或治療宣稱。")
+  ,knowledgeOnlyIngredient("peach_kernel", "桃仁", ["bloodStasis"], "《醫宗金鑑》桃紅四物湯索引，來源 PDF 第39頁。")
+  ,knowledgeOnlyIngredient("safflower", "紅花", ["bloodStasis"], "《醫宗金鑑》桃紅四物湯索引，來源 PDF 第39頁。")
+  ,knowledgeOnlyIngredient("rehmannia", "地黃", ["bloodStasis", "bloodDeficiency"], "《醫宗金鑑》桃紅四物湯索引，來源 PDF 第39頁。")
+  ,knowledgeOnlyIngredient("peony", "芍藥", ["bloodStasis", "bloodDeficiency"], "《醫宗金鑑》桃紅四物湯索引，來源 PDF 第39頁。")
+  ,knowledgeOnlyIngredient("angelica", "當歸", ["bloodStasis", "bloodDeficiency"], "《醫宗金鑑》桃紅四物湯索引，來源 PDF 第39頁。")
+  ,knowledgeOnlyIngredient("ligusticum", "川芎", ["bloodStasis", "bloodDeficiency"], "《醫宗金鑑》桃紅四物湯索引，來源 PDF 第39頁。")
 ];

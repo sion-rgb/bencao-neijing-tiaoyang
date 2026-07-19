@@ -39,7 +39,7 @@ describe("本機 PDF 知識庫流程", () => {
     const base: KnowledgeEntry = {
       id: "fixture-p1-n1", sourceDocumentId: "fixture", bookTitle: "測試", pageStart: 1, pageEnd: 1, paragraphOrder: 1,
       originalTextSimplified: "简体底本", textTraditional: "繁體轉寫", extractionMethod: "text-layer", conversionProfile: "opencc-s2hk", conversionReviewed: true,
-      topics: [], herbs: [], formulas: [], patterns: [], sourceFileName: "fixture.pdf", sourceFileHash: "a".repeat(64), rightsStatus: "unknown", publishable: false,
+      topics: [], herbs: [], formulas: [], patterns: [], organs: [], qiBloodFluids: [], coldHeat: [], deficiencyExcess: [], sourceFileName: "fixture.pdf", sourceFileHash: "a".repeat(64), rightsStatus: "unknown", publishable: false,
       sourceStatus: "verified", reviewStatus: "approved", importedAt: "2026-07-20T00:00:00.000Z", toolVersion: "1.0.0"
     };
     expect(canPublishKnowledgeEntry(base)).toBe(false);

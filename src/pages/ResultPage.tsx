@@ -1,14 +1,16 @@
 import { AlertTriangle, BookOpenText, Download, Leaf, Printer, RotateCcw, ShieldCheck, Sparkles } from "lucide-react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { APP_CONFIG } from "../config/app";
 import { disclaimerParagraphs } from "../content/disclaimer";
-import { classics } from "../data/classics/classics";
+import type { KnowledgeCatalog, KnowledgeSearchDocument } from "../data/knowledge/types";
 import { ingredients } from "../data/ingredients/ingredients";
 import { patternMap } from "../data/patterns/patterns";
 import { getDailyFoodDirections } from "../data/recommendations/foodDirections";
 import { analyseConstitution } from "../engine/scoringEngine";
 import { getApprovedFormulas, getLifestyleRecommendation, INGREDIENT_DISCLAIMER } from "../engine/recommendationEngine";
 import { assessSafety } from "../engine/safetyEngine";
+import { retrieveKnowledge, type RetrievedKnowledge } from "../engine/knowledgeRetrievalEngine";
 import { useAppState } from "../state/AppState";
 import { exportResult } from "../utils/storage";
 import type { SafetyAssessment } from "../types";
@@ -38,6 +40,29 @@ export function ResultPage() {
   const safety = assessSafety(state.safetyAnswers);
   if (safety.level === 0) return <Navigate to="/emergency" replace />;
   const result = analyseConstitution(state.questionnaireAnswers);
+  const [knowledge, setKnowledge] = useState<RetrievedKnowledge[]>([]);
+  const [knowledgeState, setKnowledgeState] = useState<"idle" | "loading" | "ready" | "error">("idle");
+
+  useEffect(() => {
+    if (result.status !== "result" || !result.primary) return;
+    const controller = new AbortController();
+    setKnowledgeState("loading");
+    const base = import.meta.env.BASE_URL;
+    fetch(`${base}knowledge/catalog.json`, { signal: controller.signal })
+      .then(async (response) => { if (!response.ok) throw new Error(`catalog HTTP ${response.status}`); return response.json() as Promise<KnowledgeCatalog>; })
+      .then(async (catalog) => {
+        const response = await fetch(`${base}${catalog.searchIndexPath}`, { signal: controller.signal });
+        if (!response.ok) throw new Error(`index HTTP ${response.status}`);
+        return response.json() as Promise<{ documents: KnowledgeSearchDocument[] }>;
+      })
+      .then((payload) => {
+        const selectedOptionIds = Object.values(state.questionnaireAnswers).flat();
+        setKnowledge(retrieveKnowledge(payload.documents, { primaryPattern: result.primary!, secondaryPattern: result.secondary, selectedOptionIds }));
+        setKnowledgeState("ready");
+      })
+      .catch((error: unknown) => { if (error instanceof DOMException && error.name === "AbortError") return; setKnowledgeState("error"); });
+    return () => controller.abort();
+  }, [result.primary, result.secondary, result.status, state.questionnaireAnswers]);
 
   const startAgain = () => {
     resetQuestionnaire();
@@ -63,7 +88,6 @@ export function ResultPage() {
   const lifestyle = getLifestyleRecommendation(result.primary);
   const dailyFoodDirections = getDailyFoodDirections(result.primary);
   const selectedFormulas = getApprovedFormulas(result.primary, state.questionnaireAnswers, safety);
-  const classicEntries = classics.filter((entry) => primary.classicIds.includes(entry.id) && entry.reviewStatus === "approved" && entry.sourceStatus === "verified");
   const exported = {
     app: { name: APP_CONFIG.name, version: APP_CONFIG.version },
     createdAt: new Date().toISOString(),
@@ -89,7 +113,7 @@ export function ResultPage() {
       </section>
 
       <div className="result-grid">
-        <section className="result-card"><div className="card-title"><Sparkles aria-hidden="true" /><h2>主要依據</h2></div><ul className="evidence-list">{result.evidence.map((item) => <li key={item}>{item}</li>)}</ul><p className="card-footnote">主要結果獲得 {result.categorySupport[result.primary].length} 個不同範疇支持；單一答案不會決定結果。</p></section>
+        <section className="result-card"><div className="card-title"><Sparkles aria-hidden="true" /><h2>為何得到這個結果</h2></div><ul className="evidence-list">{result.selectionReasons.map((item) => <li key={item}>{item}</li>)}</ul><p><strong>主要回答：</strong>{result.evidence.join("、")}</p><p className="card-footnote">單一答案不會決定結果；分數已按各證型可取得的最大相關分數正規化。</p></section>
         <section className="result-card"><div className="card-title"><Leaf aria-hidden="true" /><h2>傳統中醫理解</h2></div><p>{primary.principle}</p>{secondary && <p>次要的{secondary.shortName}表現亦較接近，但只在分數與主要傾向非常接近時列出。</p>}</section>
         <section className="result-card"><div className="card-title"><ShieldCheck aria-hidden="true" /><h2>調養重點</h2></div><ul>{primary.priorities.map((item) => <li key={item}>{item}</li>)}</ul></section>
         <section className="result-card"><h2>適合的生活習慣</h2><ul>{primary.habits.map((item) => <li key={item}>{item}</li>)}</ul></section>
@@ -132,7 +156,13 @@ export function ResultPage() {
         )) : <div className="notice"><ShieldCheck aria-hidden="true" /><div><strong>目前沒有符合全部條件的已審核配伍</strong><p>{safety.medicalNotices.includes("glucose-lowering-medication") ? "正在使用胰島素或降血糖藥時，未完成相關用藥安全欄位的配伍不會顯示。" : "完整配伍需要至少三項氣虛表現及一項脾胃表現；單一疲倦或單一山藥不會形成配伍。"}</p></div></div>}
       </section>
 
-      <section className="classics-result"><div className="card-title"><BookOpenText aria-hidden="true" /><h2>經典依據</h2></div>{classicEntries.map((entry) => <article key={entry.id}><span>{entry.book}・{entry.chapter}</span><blockquote>「{entry.originalText}」</blockquote><p>{entry.modernSummary}</p><a href={entry.sourceUrl} target="_blank" rel="noreferrer">查看公有領域原文來源</a></article>)}</section>
+      <section className="classics-result"><div className="card-title"><BookOpenText aria-hidden="true" /><h2>與本次回答相關的經典內容</h2></div>
+        {knowledgeState === "loading" && <p role="status">正在從 10 書輕量索引整理相關原文……</p>}
+        {knowledgeState === "error" && <div className="notice warning" role="alert">經典索引載入失敗；體質結果不受影響，請到經典資料庫重試。</div>}
+        {knowledge.map((entry) => <article key={entry.id}><span>{entry.bookTitle}{entry.volume ? `・${entry.volume}` : ""}{entry.chapter ? `・${entry.chapter}` : ""}・PDF 第 {entry.pageStart}{entry.pageEnd !== entry.pageStart ? `–${entry.pageEnd}` : ""} 頁</span><blockquote>「{entry.preview}」</blockquote><p>{entry.relation}</p></article>)}
+        {knowledgeState === "ready" && knowledge.length < 3 && <div className="notice warning">目前未能找到足夠跨書籍條目，不以硬編碼內容冒充檢索結果。</div>}
+        <Link to="/classics">在經典資料庫查看完整段落與來源</Link>
+      </section>
 
       <section className="safety-summary"><div><span className="kicker">安全提醒</span><h2>建議安全級別：Level {safety.level}</h2></div><ul>{safety.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul></section>
 

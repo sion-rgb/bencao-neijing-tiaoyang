@@ -13,7 +13,7 @@ export async function loadTcmGlossary(rootDir = process.cwd()): Promise<Glossary
 }
 
 export function convertToHongKongTraditional(text: string, glossary: GlossaryEntry[] = []): string {
-  let converted = opencc(text);
+  let converted = opencc(text.normalize("NFKC"));
   for (const entry of glossary) converted = converted.split(entry.from).join(entry.to);
   return converted;
 }

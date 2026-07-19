@@ -14,11 +14,11 @@ https://sion-rgb.github.io/bencao-neijing-tiaoyang/
 - 首次使用知情確認及條件式安全篩查；男性不會看到或被計入懷孕／哺乳問題
 - 緊急警號立即停止，不生成體質或選材結果
 - 43題繁體中文體質問卷，支援上一步、暫存、恢復、跳過選填題與重新開始
-- 12種體質／證候傾向、主要及次要傾向、矛盾與資料不足處理
+- 12種體質／證候傾向；按各證型最大相關分數正規化，並檢查核心證據、跨範疇支持及反向證據
 - Level 0–3安全分級；二型糖尿病是獨立注意狀態，不參與體質計分或自動封鎖結果
-- 固定且可審核的 Formula Library，不會在執行時拼湊藥材或以單味山藥當作完整配伍
+- 24項固定且可審核的 Formula Library（每個體質至少2項），不會在執行時拼湊藥材或以單味山藥當作完整配伍
 - 白名單、全域禁止清單、條件禁忌及安全欄位完整性閘門
-- 大型經典資料庫、全文搜尋、多欄篩選、收藏、引用複製及繁體轉寫／簡體底本切換
+- 10書、3,714條Production古籍資料庫；全文搜尋、多欄篩選、收藏、引用複製及繁體轉寫／簡體底本切換
 - 完全本機的 PDF 文字層擷取、選配 OCR、OpenCC `s2hk` 轉換、來源雜湊及版權發布閘門
 - localStorage版本管理、清除所有本機資料、JSON匯出及列印
 - PWA離線快取、手機優先響應式介面、鍵盤及ARIA支援
@@ -49,6 +49,7 @@ npm run preview
 ```bash
 npm run validate:data
 npm run validate:knowledge
+npm run audit:scoring
 npm run typecheck
 npm test
 npm run build
@@ -58,12 +59,15 @@ npm run build
 
 ## 本機 PDF 知識庫
 
-原始 PDF 放入 `knowledge_sources/pdfs/`，但 PDF 及本機全文 JSON 預設受 `.gitignore` 保護，不會公開。先在 `knowledge_sources/manifests/sources.json` 設定來源；版權不明必須保持 `rightsStatus: "unknown"` 及 `publishable: false`。
+知識流程分成兩層：原始 PDF 及逐行抽取結果只留本機；`src/data/knowledge/published/`只保存已明確分離並批准公開的公有領域古籍文字。公開層及其 metadata 會提交，因此乾淨 clone 不需要 PDF 也可重建完整Production索引。
+
+原始 PDF 放入 `knowledge_sources/pdfs/`，PDF 及 `src/data/knowledge/generated/` 預設受 `.gitignore` 保護。先在 `knowledge_sources/manifests/sources.json` 設定掃描來源；來源檔本身權利不明時必須保持 `rightsStatus: "unknown"` 及 `publishable: false`。
 
 ```bash
 npm run ingest:pdf
 npm run ingest:pdf -- --file knowledge_sources/pdfs/example.pdf
 npm run convert:traditional
+npm run publish:ancient-text
 npm run validate:knowledge
 npm run build:knowledge-index
 ```
@@ -72,7 +76,11 @@ npm run build:knowledge-index
 
 每段同時保留 `originalTextSimplified`（介面：簡體底本）及 `textTraditional`（介面：繁體轉寫）。OpenCC 使用香港繁體 `s2hk`，再套用 `knowledge_sources/conversion-glossary/tcm-s2hk.json` 的可審核中醫詞表。
 
-Production 只輸出同時符合 `publishable === true`、版權為 public-domain／licensed／user-owned、且 `reviewStatus === "approved"` 的條目。搜尋索引只有短預覽；完整內容按書籍拆成小 JSON，使用者搜尋並選取後才 lazy-load。未審核 OCR、未知版權及 draft 只留本機，不進入公開 Build。
+`publish:ancient-text`只適合在有本機抽取檔及完成逐書權利／內容判定時執行；它排除封面、目錄、白話譯文、現代導言、註釋、現代啟示及行銷內容，並產生逐書 manifest 與[匯入報告](reports/knowledge-import-report.md)。PDF掃描檔永不公開。`中醫內科方劑索引`只保留明確標出古籍來源的方名、組成等事實資料；`本草綱目`只保留短篇名物／氣味事實，排除現代化的編號主治敘述。
+
+Production 只輸出同時符合 `publishable === true`、版權為 public-domain／licensed／user-owned、且 `reviewStatus === "approved"` 的條目。Build Gate要求10本指定書每本至少50條、索引非空、所有分塊存在。搜尋索引只有短預覽；完整內容按書籍拆成帶內容雜湊的小JSON，使用者搜尋並選取後才lazy-load。未審核OCR、未知版權及draft只留本機，不進入公開Build。
+
+計分以36個指定profile及500份固定種子隨機問卷稽核，結果見[計分審核報告](reports/scoring-audit.md)。開發模式可在`/#/debug/scoring`檢查raw、normalized、核心證據、支持範疇、反向證據、逐題貢獻及混合差距；Production不註冊這個路由。
 
 ## Formula Library
 

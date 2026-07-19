@@ -3,10 +3,10 @@
   "$id": "formula.schema.json",
   "title": "FormulaDefinition",
   "type": "object",
-  "required": ["formulaId", "name", "formulaType", "sourceType", "suitablePatterns", "requiredAnswerGroups", "exclusionFlags", "ingredients", "optionalIngredients", "minimumIngredientCount", "maximumIngredientCount", "traditionalRationale", "suitableAnswerDescription", "unsuitableWhen", "usageForm", "stopConditions", "sourceReferences", "medicationSafety", "safetyComplete", "sourceVerified", "doseReviewed", "reviewStatus", "version", "lastUpdated"],
+  "required": ["formulaId", "name", "formulaType", "category", "displayMode", "sourceType", "suitablePatterns", "requiredAnswerGroups", "exclusionFlags", "ingredients", "optionalIngredients", "minimumIngredientCount", "maximumIngredientCount", "traditionalRationale", "suitableAnswerDescription", "unsuitableWhen", "usageForm", "stopConditions", "sourceReferences", "medicationSafety", "safetyComplete", "sourceVerified", "doseReviewed", "reviewStatus", "version", "lastUpdated"],
   "properties": {
     "formulaId": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 },
-    "formulaType": { "const": "rule-based-gentle-combination" }, "sourceType": { "enum": ["product-owner-rule", "verified-classic"] },
+    "formulaType": { "const": "rule-based-gentle-combination" }, "category": { "enum": ["daily-food", "gentle-tea", "traditional-formula-knowledge"] }, "displayMode": { "enum": ["automated", "knowledge-only"] }, "sourceType": { "enum": ["product-owner-rule", "verified-classic"] },
     "suitablePatterns": { "type": "array", "minItems": 1, "items": { "type": "string" } },
     "requiredAnswerGroups": { "type": "array", "minItems": 1 }, "exclusionFlags": { "type": "array", "items": { "type": "string" } },
     "ingredients": { "type": "array", "minItems": 3, "maxItems": 6 }, "optionalIngredients": { "type": "array" },

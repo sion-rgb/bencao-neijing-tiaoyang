@@ -3,6 +3,14 @@ import type { ReviewStatus } from "../../types";
 export type RightsStatus = "public-domain" | "licensed" | "user-owned" | "unknown";
 export type KnowledgeSourceStatus = "extracted" | "converted" | "needs-review" | "verified";
 
+export type RightsAssessment = {
+  scanRedistributionAllowed: boolean;
+  ancientTextPublicationAllowed: boolean;
+  containsModernCommentary: boolean;
+  modernCommentaryPublicationAllowed: boolean;
+  decisionReason: string;
+};
+
 export type KnowledgeEntry = {
   id: string;
   sourceDocumentId: string;
@@ -25,6 +33,10 @@ export type KnowledgeEntry = {
   herbs: string[];
   formulas: string[];
   patterns: string[];
+  organs: string[];
+  qiBloodFluids: string[];
+  coldHeat: string[];
+  deficiencyExcess: string[];
   sourceFileName: string;
   sourceFileHash: string;
   rightsStatus: RightsStatus;
@@ -33,6 +45,7 @@ export type KnowledgeEntry = {
   reviewStatus: ReviewStatus;
   importedAt: string;
   toolVersion: string;
+  publicationRule?: string;
 };
 
 export type KnowledgeDocumentManifest = {
@@ -50,6 +63,21 @@ export type KnowledgeDocumentManifest = {
   importedAt?: string;
   toolVersion: string;
   reviewStatus: ReviewStatus;
+  rightsAssessment?: RightsAssessment;
+};
+
+export type KnowledgePublicationManifest = KnowledgeDocumentManifest & {
+  sourceFileHash: string;
+  pageCount: number;
+  textLayerPages: number;
+  processedPages: number;
+  publishableAncientTextPages: number;
+  excludedPages: Array<{ page: number; reasons: string[] }>;
+  productionEntryCount: number;
+  sectionCount: number;
+  herbCount: number;
+  formulaCount: number;
+  publicationRule: string;
 };
 
 export type KnowledgeSearchDocument = {
@@ -57,21 +85,30 @@ export type KnowledgeSearchDocument = {
   bookTitle: string;
   chapter?: string;
   section?: string;
+  volume?: string;
   pageStart: number;
+  pageEnd: number;
   preview: string;
   topics: string[];
   herbs: string[];
   formulas: string[];
   patterns: string[];
+  organs: string[];
+  qiBloodFluids: string[];
+  coldHeat: string[];
+  deficiencyExcess: string[];
   extractionMethod: "text-layer" | "ocr";
   reviewStatus: ReviewStatus;
   sourceStatus: KnowledgeSourceStatus;
   chunkPath: string;
+  sourceFileHash: string;
 };
 
 export type KnowledgeCatalog = {
-  schemaVersion: number;
+  schemaVersion: 2;
+  contentVersion: string;
   generatedAt: string;
+  searchIndexPath: string;
   documents: Array<{
     documentId: string;
     bookTitle: string;
@@ -81,6 +118,7 @@ export type KnowledgeCatalog = {
     patterns: string[];
     entryCount: number;
     chunkPaths: string[];
+    sourceFileHash: string;
   }>;
 };
 

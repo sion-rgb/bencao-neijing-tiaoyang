@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { AnswerMap, StoredState } from "../types";
 import { pruneHiddenSafetyAnswers } from "../data/safety/safetyQuestions";
-import { clearAllLocalData, EMPTY_STATE, loadState, saveState } from "../utils/storage";
+import { clearAllLocalData, dismissMigrationNotice, EMPTY_STATE, hasMigrationNotice, loadState, saveState } from "../utils/storage";
 
 type AppStateContextValue = {
   state: StoredState;
@@ -12,12 +12,15 @@ type AppStateContextValue = {
   resetQuestionnaire: () => void;
   clearEverything: () => void;
   replaceAnswers: (answers: AnswerMap) => void;
+  migrationNotice: boolean;
+  dismissMigration: () => void;
 };
 
 const AppStateContext = createContext<AppStateContextValue | null>(null);
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<StoredState>(() => loadState());
+  const [migrationNotice, setMigrationNotice] = useState(() => hasMigrationNotice());
 
   useEffect(() => {
     saveState(state);
@@ -36,8 +39,9 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
       setState({ ...EMPTY_STATE });
     }, []);
   const replaceAnswers = useCallback((questionnaireAnswers: AnswerMap) => setState((current) => ({ ...current, questionnaireAnswers })), []);
+  const dismissMigration = useCallback(() => { dismissMigrationNotice(); setMigrationNotice(false); }, []);
 
-  const value = useMemo<AppStateContextValue>(() => ({ state, setConsent, setSafetyAnswer, setQuestionnaireAnswer, setCurrentStep, resetQuestionnaire, clearEverything, replaceAnswers }), [state, setConsent, setSafetyAnswer, setQuestionnaireAnswer, setCurrentStep, resetQuestionnaire, clearEverything, replaceAnswers]);
+  const value = useMemo<AppStateContextValue>(() => ({ state, setConsent, setSafetyAnswer, setQuestionnaireAnswer, setCurrentStep, resetQuestionnaire, clearEverything, replaceAnswers, migrationNotice, dismissMigration }), [state, setConsent, setSafetyAnswer, setQuestionnaireAnswer, setCurrentStep, resetQuestionnaire, clearEverything, replaceAnswers, migrationNotice, dismissMigration]);
 
   return <AppStateContext.Provider value={value}>{children}</AppStateContext.Provider>;
 }
