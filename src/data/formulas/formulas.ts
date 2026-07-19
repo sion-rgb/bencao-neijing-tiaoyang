@@ -19,7 +19,7 @@ type FormulaConfig = {
 const sources = {
   routine: { knowledgeEntryId: "huangdi-neijing-published-00002", documentId: "huangdi-neijing", title: "《黃帝內經・素問》上古天真論", pageStart: 6, pageEnd: 6, note: "只作生活有常的文化脈絡；產品食物組合不是古方。" },
   yam: { knowledgeEntryId: "bencao-gangmu-published-00251", documentId: "bencao-gangmu", title: "《本草綱目》山藥釋名／氣味資料", pageStart: 291, pageEnd: 291 },
-  poria: { knowledgeEntryId: "qijing-bamai-kao-published-00083", documentId: "qijing-bamai-kao", title: "《奇經八脈考》茯苓、五味子等方義材料", pageStart: 24, pageEnd: 24 },
+  poria: { knowledgeEntryId: "qijing-bamai-kao-published-00084", documentId: "qijing-bamai-kao", title: "《奇經八脈考》茯苓、五味子等方義材料", pageStart: 24, pageEnd: 24 },
   rice: { knowledgeEntryId: "bencao-gangmu-published-00158", documentId: "bencao-gangmu", title: "《本草綱目》粳米氣味資料", pageStart: 176, pageEnd: 176 },
   date: { knowledgeEntryId: "shennong-bencao-jing-published-00264", documentId: "shennong-bencao-jing", title: "《神農本草經》大棗", pageStart: 62, pageEnd: 62 },
   coix: { knowledgeEntryId: "shennong-bencao-jing-published-00101", documentId: "shennong-bencao-jing", title: "《神農本草經》薏苡仁", pageStart: 26, pageEnd: 26 },
@@ -29,7 +29,7 @@ const sources = {
   sesame: { knowledgeEntryId: "shennong-bencao-jing-published-00273", documentId: "shennong-bencao-jing", title: "《神農本草經》胡麻", pageStart: 65, pageEnd: 65 },
   longan: { knowledgeEntryId: "shennong-bencao-jing-published-00417", documentId: "shennong-bencao-jing", title: "《神農本草經》龍眼", pageStart: 95, pageEnd: 95 },
   digestion: { knowledgeEntryId: "yixue-sanzijing-published-00042", documentId: "yixue-sanzijing", title: "《醫學三字經》食積相關原文", pageStart: 26, pageEnd: 26 },
-  peachRed: { knowledgeEntryId: "zhongyi-neike-fangji-suoyin-published-00513", documentId: "zhongyi-neike-fangji-suoyin", title: "《醫宗金鑑》桃紅四物湯索引資料", pageStart: 39, pageEnd: 39 }
+  peachRed: { knowledgeEntryId: "zhongyi-neike-fangji-suoyin-published-00484", documentId: "zhongyi-neike-fangji-suoyin", title: "《醫宗金鑑》桃紅四物湯索引資料", pageStart: 39, pageEnd: 39 }
 } satisfies Record<string, SourceReference>;
 
 const I = (id: string, role: FormulaIngredientRole, reason: string): FixedIngredient => [id, role, reason];
