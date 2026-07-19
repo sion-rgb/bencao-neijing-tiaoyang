@@ -67,10 +67,10 @@ for (const classic of classics) {
 const ingredientIds = new Set(ingredients.map((item) => item.id));
 const questionOptionIds = new Set(constitutionQuestions.flatMap((item) => item.options.map((option) => option.optionId)));
 const publishedDir = path.join(process.cwd(), "src", "data", "knowledge", "published");
-const publishedEntryIds = new Set<string>();
+const publishedEntries = new Map<string, { sourceDocumentId: string; pageStart: number; pageEnd: number }>();
 for (const file of (await readdir(publishedDir)).filter((item) => item.endsWith(".json"))) {
-  const entries = JSON.parse(await readFile(path.join(publishedDir, file), "utf8")) as Array<{ id: string }>;
-  for (const entry of entries) publishedEntryIds.add(entry.id);
+  const entries = JSON.parse(await readFile(path.join(publishedDir, file), "utf8")) as Array<{ id: string; sourceDocumentId: string; pageStart: number; pageEnd: number }>;
+  for (const entry of entries) publishedEntries.set(entry.id, entry);
 }
 for (const formula of formulas) {
   if (formula.ingredients.length < 3 || formula.ingredients.length > 6) failures.push(`Formula ${formula.formulaId} must contain 3-6 fixed ingredients`);
@@ -84,7 +84,16 @@ for (const formula of formulas) {
   if (formula.sourceType === "product-owner-rule" && formula.sourceReferences.some((source) => /古方|倪海廈原方/u.test(source.title))) failures.push(`Formula ${formula.formulaId} mislabels a product rule as a classical formula`);
   const knowledgeSources = formula.sourceReferences.filter((source) => source.knowledgeEntryId);
   if (!knowledgeSources.length) failures.push(`Formula ${formula.formulaId} has no published KnowledgeEntry source`);
-  for (const source of knowledgeSources) if (!publishedEntryIds.has(source.knowledgeEntryId!)) failures.push(`Formula ${formula.formulaId} references missing KnowledgeEntry ${source.knowledgeEntryId}`);
+  for (const source of knowledgeSources) {
+    const entry = publishedEntries.get(source.knowledgeEntryId!);
+    if (!entry) {
+      failures.push(`Formula ${formula.formulaId} references missing KnowledgeEntry ${source.knowledgeEntryId}`);
+      continue;
+    }
+    if (source.documentId && source.documentId !== entry.sourceDocumentId) failures.push(`Formula ${formula.formulaId} source ${source.knowledgeEntryId} has the wrong documentId`);
+    if (source.pageStart && (source.pageStart < entry.pageStart || source.pageStart > entry.pageEnd)) failures.push(`Formula ${formula.formulaId} source ${source.knowledgeEntryId} does not cover declared page ${source.pageStart}`);
+    if (source.pageEnd && (source.pageEnd < entry.pageStart || source.pageEnd > entry.pageEnd)) failures.push(`Formula ${formula.formulaId} source ${source.knowledgeEntryId} does not cover declared page ${source.pageEnd}`);
+  }
   if (formula.category === "traditional-formula-knowledge" && formula.displayMode !== "knowledge-only") failures.push(`High-risk classic ${formula.formulaId} must be knowledge-only`);
 }
 
