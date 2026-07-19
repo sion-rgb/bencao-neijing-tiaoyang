@@ -6,6 +6,8 @@
   "required": ["id", "prompt", "required", "options", "reviewStatus"],
   "properties": {
     "id": { "type": "string", "minLength": 1 }, "prompt": { "type": "string", "minLength": 1 }, "required": { "const": true }, "multiple": { "type": "boolean" }, "reviewStatus": { "enum": ["draft", "tcm-reviewed", "safety-reviewed", "approved"] },
+    "visibilityMode": { "enum": ["all", "any"] },
+    "visibilityRules": { "type": "array", "items": { "type": "object", "required": ["type"], "properties": { "type": { "enum": ["answer-equals", "answer-in", "not-applicable"] }, "questionId": { "type": "string" }, "optionId": { "type": "string" }, "optionIds": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } },
     "options": { "type": "array", "minItems": 2, "items": { "type": "object", "required": ["id", "label", "flags"], "properties": { "id": { "type": "string" }, "label": { "type": "string" }, "flags": { "type": "array", "items": { "type": "string" } } }, "additionalProperties": false } }
   },
   "additionalProperties": false

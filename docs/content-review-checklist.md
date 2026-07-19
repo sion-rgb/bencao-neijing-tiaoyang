@@ -14,6 +14,7 @@
 - [ ] 沒有保證療效、根治、排毒、抗癌、降糖、通血管等禁止聲稱
 - [ ] 問題使用日常語言；選項權重不讓單一題決定結果
 - [ ] 現代疾病只影響安全級別，不參與體質分數
+- [ ] 二型糖尿病只作安全注意，沒有被直接換算成氣虛、陰虛、痰濕或消渴
 
 ## 經典內容
 
@@ -22,9 +23,13 @@
 - [ ] 原文與現代整理分欄；現代文字沒有偽裝成古籍引文
 - [ ] 未核實項目標記`needs-review`且正式模式不顯示
 - [ ] 沒有複製受版權保護的現代譯本全文
+- [ ] PDF每段保留檔名、SHA-256、頁碼、擷取方法、繁體轉換及審核狀態
+- [ ] `rightsStatus: unknown`保持`publishable: false`；未審核OCR不進Production
+- [ ] 繁體轉寫與簡體底本標示正確，沒有冒充兩個不同古籍版本
+- [ ] PDF知識條目沒有自動變成Formula或被關鍵字拼成配伍
 
 ## 發布前
 
 - [ ] 完成安全審核清單
-- [ ] `npm run validate:data`、`npm run typecheck`、`npm test`及`npm run build`全部通過
+- [ ] `npm run validate:data`、`npm run validate:knowledge`、`npm run typecheck`、`npm test`及`npm run build`全部通過
 - [ ] 首次確認、結果及使用須知三處免責意思一致且沒有被弱化

@@ -7,7 +7,11 @@
     "dev": "vite",
     "preview": "vite preview",
     "validate:data": "tsx scripts/validate-data.ts",
-    "prebuild": "npm run validate:data",
+    "validate:knowledge": "tsx tools/knowledge/validate-knowledge.ts",
+    "ingest:pdf": "tsx tools/pdf_ingest/cli.ts",
+    "convert:traditional": "tsx tools/traditional_conversion/cli.ts",
+    "build:knowledge-index": "tsx tools/knowledge/build-index.ts",
+    "prebuild": "npm run validate:data && npm run validate:knowledge && npm run build:knowledge-index",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty false",
     "test": "vitest run",
@@ -16,6 +20,9 @@
   },
   "dependencies": {
     "lucide-react": "1.25.0",
+    "minisearch": "7.2.0",
+    "opencc-js": "1.4.1",
+    "pdfjs-dist": "6.1.200",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-router-dom": "7.18.1"

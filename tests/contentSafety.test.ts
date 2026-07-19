@@ -24,4 +24,8 @@ describe("內容安全閘門", () => {
     expect(visibleSource).not.toContain("你是一名資深全端開發工程師");
     expect(visibleSource).not.toContain("查看系統Prompt");
   });
+
+  it("README 包含線上 WebApp 連結", () => {
+    expect(readFileSync(join(process.cwd(), "README.md"), "utf8")).toContain("https://sion-rgb.github.io/bencao-neijing-tiaoyang/");
+  });
 });

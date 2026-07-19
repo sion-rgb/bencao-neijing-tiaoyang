@@ -1,10 +1,19 @@
-import type { SafetyQuestion } from "../../types";
+import type { AnswerMap, QuestionVisibilityRule, SafetyQuestion } from "../../types";
 
-const q = (id: string, prompt: string, options: SafetyQuestion["options"], multiple = false): SafetyQuestion => ({
+const q = (
+  id: string,
+  prompt: string,
+  options: SafetyQuestion["options"],
+  multiple = false,
+  visibilityRules?: QuestionVisibilityRule[],
+  visibilityMode: SafetyQuestion["visibilityMode"] = "all"
+): SafetyQuestion => ({
   id,
   prompt,
   options,
   multiple,
+  visibilityRules,
+  visibilityMode,
   required: true,
   reviewStatus: "approved"
 });
@@ -16,22 +25,36 @@ export const safetyQuestions: SafetyQuestion[] = [
     { id: "age_40_64", label: "40至64歲", flags: [] },
     { id: "age_65_plus", label: "65歲或以上", flags: ["olderAdult"] }
   ]),
-  q("sex", "你的生理性別是？", [
-    { id: "sex_male", label: "男", flags: [] },
-    { id: "sex_female", label: "女", flags: [] },
+  q("sex", "你的生理性別是甚麼？此資料只用於顯示相關安全問題。", [
+    { id: "sex_male", label: "男性", flags: [] },
+    { id: "sex_female", label: "女性", flags: [] },
+    { id: "sex_intersex_other", label: "其他／雙性特徵", flags: [] },
     { id: "sex_prefer_not", label: "不願回答", flags: [] }
   ]),
+  q("pregnancy_applicability", "懷孕或餵哺母乳相關問題是否適用於你？", [
+    { id: "pregnancy_applicable", label: "適用", flags: [] },
+    { id: "pregnancy_not_applicable", label: "不適用", flags: [] },
+    { id: "pregnancy_applicability_unsure", label: "不確定", flags: ["safetyUncertain"] },
+    { id: "pregnancy_applicability_prefer_not", label: "不願回答", flags: ["safetyUncertain"] }
+  ], false, [{ type: "answer-in", questionId: "sex", optionIds: ["sex_intersex_other", "sex_prefer_not"] }]),
   q("pregnancy", "你目前是否懷孕？", [
     { id: "pregnancy_yes", label: "是", flags: ["pregnant"] },
     { id: "pregnancy_no", label: "否", flags: [] },
     { id: "pregnancy_na", label: "不適用", flags: [] },
     { id: "pregnancy_unsure", label: "不確定", flags: ["safetyUncertain"] }
-  ]),
+  ], false, [
+    { type: "answer-equals", questionId: "sex", optionId: "sex_female" },
+    { type: "answer-in", questionId: "pregnancy_applicability", optionIds: ["pregnancy_applicable", "pregnancy_applicability_unsure"] }
+  ], "any"),
   q("breastfeeding", "你目前是否餵哺母乳？", [
     { id: "breastfeeding_yes", label: "是", flags: ["breastfeeding"] },
     { id: "breastfeeding_no", label: "否", flags: [] },
-    { id: "breastfeeding_na", label: "不適用", flags: [] }
-  ]),
+    { id: "breastfeeding_na", label: "不適用", flags: [] },
+    { id: "breastfeeding_unsure", label: "不確定", flags: ["safetyUncertain"] }
+  ], false, [
+    { type: "answer-equals", questionId: "sex", optionId: "sex_female" },
+    { type: "answer-in", questionId: "pregnancy_applicability", optionIds: ["pregnancy_applicable", "pregnancy_applicability_unsure"] }
+  ], "any"),
   q("g6pd", "你是否有G6PD缺乏症／蠶豆症？", [
     { id: "g6pd_yes", label: "是", flags: ["g6pd"] },
     { id: "g6pd_no", label: "否", flags: [] },
@@ -44,8 +67,10 @@ export const safetyQuestions: SafetyQuestion[] = [
     { id: "diabetes_gestational", label: "妊娠糖尿病", flags: ["gestationalDiabetes"] },
     { id: "diabetes_unsure", label: "不確定", flags: ["safetyUncertain"] }
   ]),
-  q("glucose_medicine", "你是否使用胰島素或降血糖藥？", [
-    { id: "glucose_medicine_yes", label: "是", flags: ["glucoseMedicine"] },
+  q("glucose_medicine", "你目前是否使用胰島素或降血糖藥？", [
+    { id: "glucose_medicine_oral", label: "正在使用降血糖藥（不包括胰島素）", flags: ["glucoseMedicine"] },
+    { id: "glucose_medicine_insulin", label: "正在使用胰島素", flags: ["glucoseMedicine", "insulinUse", "hypoglycaemiaRisk"] },
+    { id: "glucose_medicine_both", label: "同時使用胰島素及其他降血糖藥", flags: ["glucoseMedicine", "insulinUse", "hypoglycaemiaRisk"] },
     { id: "glucose_medicine_no", label: "否", flags: [] },
     { id: "glucose_medicine_na", label: "不適用", flags: [] },
     { id: "glucose_medicine_unsure", label: "不確定", flags: ["safetyUncertain"] }
@@ -64,7 +89,7 @@ export const safetyQuestions: SafetyQuestion[] = [
   ], true),
   q("medicines", "現時是否服用以下產品？可多選。", [
     { id: "medicine_anticoagulant", label: "抗凝血藥或抗血小板藥", flags: ["anticoagulant"] },
-    { id: "medicine_glucose", label: "胰島素或降血糖藥", flags: ["glucoseMedicine"] },
+    { id: "medicine_glucose", label: "胰島素或降血糖藥（如未能確定類別）", flags: ["glucoseMedicine", "hypoglycaemiaRisk"] },
     { id: "medicine_immunosuppressant", label: "免疫抑制劑", flags: ["immunosuppressant"] },
     { id: "medicine_many_western", label: "多種西藥", flags: ["polypharmacy"] },
     { id: "medicine_many_tcm", label: "多種中藥", flags: ["multipleTcm"] },
@@ -93,9 +118,42 @@ export const safetyQuestions: SafetyQuestion[] = [
     { id: "emergency_black_stool", label: "黑色柏油狀大便", flags: ["emergency"] },
     { id: "emergency_abdominal", label: "持續嚴重腹痛", flags: ["emergency"] },
     { id: "emergency_vomiting", label: "不斷嘔吐，無法飲水", flags: ["emergency"] },
+    { id: "emergency_dehydration", label: "嚴重脫水表現，例如無法飲水、極少小便或明顯虛弱", flags: ["emergency"] },
+    { id: "emergency_hypoglycaemia", label: "冒冷汗、發抖、心悸、頭暈、神志不清等嚴重低血糖警號", flags: ["emergency", "hypoglycaemiaRisk"] },
     { id: "emergency_diabetic", label: "糖尿病同時出現嚴重口渴、頻尿、嘔吐、腹痛、異常疲倦或呼吸異常", flags: ["emergency"] },
     { id: "emergency_none", label: "以上皆無", flags: [] }
   ], true)
 ];
 
 export const emergencyOptionIds = new Set(safetyQuestions.find((item) => item.id === "emergency")?.options.filter((item) => item.flags.includes("emergency")).map((item) => item.id));
+
+export function isSafetyQuestionVisible(question: SafetyQuestion, answers: AnswerMap): boolean {
+  if (!question.visibilityRules?.length) return true;
+  const matches = question.visibilityRules.map((rule) => {
+    if (rule.type === "not-applicable") return false;
+    const selected = answers[rule.questionId] ?? [];
+    if (rule.type === "answer-equals") return selected.includes(rule.optionId);
+    return rule.optionIds.some((optionId) => selected.includes(optionId));
+  });
+  return question.visibilityMode === "any" ? matches.some(Boolean) : matches.every(Boolean);
+}
+
+export function getVisibleSafetyQuestions(answers: AnswerMap): SafetyQuestion[] {
+  return safetyQuestions.filter((question) => isSafetyQuestionVisible(question, answers));
+}
+
+export function pruneHiddenSafetyAnswers(answers: AnswerMap): AnswerMap {
+  let pruned = { ...answers };
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const question of safetyQuestions) {
+      if (!isSafetyQuestionVisible(question, pruned) && question.id in pruned) {
+        const { [question.id]: _removed, ...remaining } = pruned;
+        pruned = remaining;
+        changed = true;
+      }
+    }
+  }
+  return pruned;
+}

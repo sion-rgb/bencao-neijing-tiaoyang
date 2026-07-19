@@ -50,8 +50,15 @@ export type SafetyQuestion = {
   required: true;
   multiple?: boolean;
   options: Array<{ id: string; label: string; flags: string[] }>;
+  visibilityRules?: QuestionVisibilityRule[];
+  visibilityMode?: "all" | "any";
   reviewStatus: ReviewStatus;
 };
+
+export type QuestionVisibilityRule =
+  | { type: "answer-equals"; questionId: string; optionId: string }
+  | { type: "answer-in"; questionId: string; optionIds: string[] }
+  | { type: "not-applicable" };
 
 export type Pattern = {
   id: PatternId;
@@ -119,12 +126,92 @@ export type AnalysisResult = {
 
 export type SafetyLevel = 0 | 1 | 2 | 3;
 
+export type MedicalNoticeFlag =
+  | "type2-diabetes"
+  | "glucose-lowering-medication"
+  | "insulin-use"
+  | "hypoglycaemia-risk";
+
+export type MedicalConditionPolicy = {
+  affectsPatternScore: boolean;
+  blocksPatternResult: boolean;
+  blocksFoodAdvice: boolean;
+  blocksApprovedFormula: boolean;
+  showMedicalNotice: boolean;
+  noticeFlag: MedicalNoticeFlag;
+};
+
 export type SafetyAssessment = {
   level: SafetyLevel;
   reasons: string[];
   flags: string[];
+  medicalNotices: MedicalNoticeFlag[];
   allowIngredients: boolean;
+  allowApprovedFormulas: boolean;
   conservativeOnly: boolean;
+};
+
+export type SourceReference = {
+  knowledgeEntryId?: string;
+  documentId?: string;
+  title: string;
+  chapter?: string;
+  pageStart?: number;
+  pageEnd?: number;
+  sourceUrl?: string;
+  note?: string;
+};
+
+export type FormulaMedicationSafety = {
+  diabetesMedicationReviewed: boolean;
+  insulinUseReviewed: boolean;
+  hypoglycaemiaWarningRequired: boolean;
+  knownInteractionNotes: string[];
+  safetySources: SourceReference[];
+};
+
+export type FormulaIngredientRole = "主要調養" | "協同" | "調和" | "理氣配合" | "食療補充";
+
+export type FormulaIngredient = {
+  ingredientId: string;
+  role: FormulaIngredientRole;
+  reason: string;
+  includeWhen?: string[];
+};
+
+export type FormulaDefinition = {
+  formulaId: string;
+  name: string;
+  formulaType: "rule-based-gentle-combination";
+  sourceType: "product-owner-rule" | "verified-classic";
+  suitablePatterns: PatternId[];
+  requiredAnswerGroups: Array<{ minimumMatches: number; optionIds: string[]; description: string }>;
+  exclusionFlags: string[];
+  ingredients: FormulaIngredient[];
+  optionalIngredients: FormulaIngredient[];
+  minimumIngredientCount: number;
+  maximumIngredientCount: number;
+  traditionalRationale: string;
+  suitableAnswerDescription: string;
+  unsuitableWhen: string[];
+  usageForm: string;
+  stopConditions: string[];
+  sourceReferences: SourceReference[];
+  medicationSafety: FormulaMedicationSafety;
+  safetyComplete: boolean;
+  sourceVerified: boolean;
+  doseText?: string;
+  doseSource?: SourceReference;
+  doseReviewed: boolean;
+  reviewStatus: ReviewStatus;
+  version: string;
+  lastUpdated: string;
+};
+
+export type SelectedFormula = {
+  formula: FormulaDefinition;
+  ingredients: FormulaIngredient[];
+  selectionReasons: string[];
 };
 
 export type StoredState = {

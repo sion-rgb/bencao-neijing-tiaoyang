@@ -3,3 +3,10 @@ dist
 coverage
 *.local
 .DS_Store
+tmp/
+.venv/
+knowledge_sources/pdfs/*.pdf
+knowledge_sources/rejected/*
+!knowledge_sources/rejected/README.md
+src/data/knowledge/generated/*.json
+!src/data/knowledge/generated/.gitkeep
