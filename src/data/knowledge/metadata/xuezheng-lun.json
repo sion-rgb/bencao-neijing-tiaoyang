@@ -1,0 +1,168 @@
+{
+  "documentId": "xuezheng-lun",
+  "sourceFileName": "血证论-古籍典藏-luckclub.pdf",
+  "bookTitle": "血證論",
+  "author": "唐宗海",
+  "rightsStatus": "public-domain",
+  "publishable": true,
+  "sourceFileHash": "ea7f485fc03ccf55946d05a6e186fad6bb3197c461c0a39f8c312e6dcf467499",
+  "pageCount": 102,
+  "textLayerPages": 102,
+  "processedPages": 102,
+  "publishableAncientTextPages": 79,
+  "excludedPages": [
+    {
+      "page": 1,
+      "reasons": [
+        "封面／目錄／出版版面"
+      ]
+    },
+    {
+      "page": 2,
+      "reasons": [
+        "封面／目錄／出版版面"
+      ]
+    },
+    {
+      "page": 3,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 4,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 5,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 6,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 7,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 8,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 9,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 10,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 11,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 28,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 34,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 35,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 36,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 46,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 52,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 53,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 73,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 74,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 75,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 76,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 97,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    }
+  ],
+  "productionEntryCount": 405,
+  "sectionCount": 7,
+  "herbCount": 92,
+  "formulaCount": 0,
+  "publicationRule": "排除導言、白話及現代啟示；按卷、論及原文段落分段。",
+  "importedAt": "2026-07-20T00:00:00.000Z",
+  "toolVersion": "2.0.0",
+  "reviewStatus": "approved",
+  "rightsAssessment": {
+    "scanRedistributionAllowed": false,
+    "ancientTextPublicationAllowed": true,
+    "containsModernCommentary": true,
+    "modernCommentaryPublicationAllowed": false,
+    "decisionReason": "PDF 掃描／排版不公開；只發布已明確分離、可追溯頁碼的公有領域古籍文字或古方事實資料，白話、註釋、導言及現代啟示全部排除。"
+  }
+}

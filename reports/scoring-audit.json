@@ -1,0 +1,501 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-20T00:00:00.000Z",
+  "normalization": "weightedEvidenceScore / patternMaximumRelevantScore, with core evidence, category breadth, specificity and contradiction adjustments",
+  "fixtureSummary": {
+    "total": 36,
+    "passed": 36
+  },
+  "fixtureResults": [
+    {
+      "id": "balanced-1",
+      "expected": "balanced",
+      "actual": "balanced",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 98.113,
+      "core": [
+        "體感穩定",
+        "精神與活動恢復良好",
+        "食慾與排便大致協調",
+        "睡眠相對穩定"
+      ]
+    },
+    {
+      "id": "balanced-2",
+      "expected": "balanced",
+      "actual": "balanced",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 98.113,
+      "core": [
+        "體感穩定",
+        "精神與活動恢復良好",
+        "食慾與排便大致協調",
+        "睡眠相對穩定"
+      ]
+    },
+    {
+      "id": "balanced-3",
+      "expected": "balanced",
+      "actual": "balanced",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 98.113,
+      "core": [
+        "體感穩定",
+        "精神與活動恢復良好",
+        "食慾與排便大致協調",
+        "睡眠相對穩定"
+      ]
+    },
+    {
+      "id": "qiDeficiency-1",
+      "expected": "qiDeficiency",
+      "actual": "qiDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 74.419,
+      "core": [
+        "疲倦及活動後加重",
+        "聲弱或動則汗出",
+        "休息後恢復不足"
+      ]
+    },
+    {
+      "id": "qiDeficiency-2",
+      "expected": "qiDeficiency",
+      "actual": "qiDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 81.395,
+      "core": [
+        "疲倦及活動後加重",
+        "聲弱或動則汗出",
+        "休息後恢復不足"
+      ]
+    },
+    {
+      "id": "qiDeficiency-3",
+      "expected": "qiDeficiency",
+      "actual": "qiDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 86.047,
+      "core": [
+        "疲倦及活動後加重",
+        "聲弱或動則汗出",
+        "休息後恢復不足"
+      ]
+    },
+    {
+      "id": "spleenQiDeficiency-1",
+      "expected": "spleenQiDeficiency",
+      "actual": "spleenQiDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 95.652,
+      "core": [
+        "食慾弱及飯後脹",
+        "便稀黏或生冷後不適",
+        "氣虛兼沉重"
+      ]
+    },
+    {
+      "id": "spleenQiDeficiency-2",
+      "expected": "spleenQiDeficiency",
+      "actual": "spleenQiDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 95.652,
+      "core": [
+        "食慾弱及飯後脹",
+        "便稀黏或生冷後不適",
+        "氣虛兼沉重"
+      ]
+    },
+    {
+      "id": "spleenQiDeficiency-3",
+      "expected": "spleenQiDeficiency",
+      "actual": "spleenQiDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 100,
+      "core": [
+        "食慾弱及飯後脹",
+        "便稀黏或生冷後不適",
+        "氣虛兼沉重"
+      ]
+    },
+    {
+      "id": "spleenYangDeficiency-1",
+      "expected": "spleenYangDeficiency",
+      "actual": "spleenYangDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 100,
+      "core": [
+        "生冷後腹瀉腹痛",
+        "怕冷或手足冷",
+        "便稀或浮腫"
+      ]
+    },
+    {
+      "id": "spleenYangDeficiency-2",
+      "expected": "spleenYangDeficiency",
+      "actual": "spleenYangDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 100,
+      "core": [
+        "生冷後腹瀉腹痛",
+        "怕冷或手足冷",
+        "便稀或浮腫"
+      ]
+    },
+    {
+      "id": "spleenYangDeficiency-3",
+      "expected": "spleenYangDeficiency",
+      "actual": "spleenYangDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 80.645,
+      "core": [
+        "生冷後腹瀉腹痛",
+        "怕冷或手足冷",
+        "便稀或浮腫"
+      ]
+    },
+    {
+      "id": "phlegmDampness-1",
+      "expected": "phlegmDampness",
+      "actual": "phlegmDampness",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 65.714,
+      "core": [
+        "身體或頭部沉重",
+        "黏滯表現",
+        "油膩後加重"
+      ]
+    },
+    {
+      "id": "phlegmDampness-2",
+      "expected": "phlegmDampness",
+      "actual": "phlegmDampness",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 71.429,
+      "core": [
+        "身體或頭部沉重",
+        "黏滯表現",
+        "油膩後加重"
+      ]
+    },
+    {
+      "id": "phlegmDampness-3",
+      "expected": "phlegmDampness",
+      "actual": "phlegmDampness",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 71.429,
+      "core": [
+        "身體或頭部沉重",
+        "黏滯表現",
+        "油膩後加重"
+      ]
+    },
+    {
+      "id": "dampHeat-1",
+      "expected": "dampHeat",
+      "actual": "dampHeat",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 78.846,
+      "core": [
+        "偏熱或心煩",
+        "汗便黏滯",
+        "油膩後口黏燥熱"
+      ]
+    },
+    {
+      "id": "dampHeat-2",
+      "expected": "dampHeat",
+      "actual": "dampHeat",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 82.692,
+      "core": [
+        "偏熱或心煩",
+        "汗便黏滯",
+        "油膩後口黏燥熱"
+      ]
+    },
+    {
+      "id": "dampHeat-3",
+      "expected": "dampHeat",
+      "actual": "dampHeat",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 86.538,
+      "core": [
+        "偏熱或心煩",
+        "汗便黏滯",
+        "油膩後口黏燥熱"
+      ]
+    },
+    {
+      "id": "yinDeficiency-1",
+      "expected": "yinDeficiency",
+      "actual": "yinDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 80,
+      "core": [
+        "夜間或手足心熱",
+        "夜間口乾或津少",
+        "偏紅偏熱"
+      ]
+    },
+    {
+      "id": "yinDeficiency-2",
+      "expected": "yinDeficiency",
+      "actual": "yinDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 86.154,
+      "core": [
+        "夜間或手足心熱",
+        "夜間口乾或津少",
+        "偏紅偏熱"
+      ]
+    },
+    {
+      "id": "yinDeficiency-3",
+      "expected": "yinDeficiency",
+      "actual": "yinDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 80,
+      "core": [
+        "夜間或手足心熱",
+        "夜間口乾或津少",
+        "偏紅偏熱"
+      ]
+    },
+    {
+      "id": "yangDeficiency-1",
+      "expected": "yangDeficiency",
+      "actual": "yangDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 93.182,
+      "core": [
+        "怕冷及手足冷",
+        "夜尿或浮腫",
+        "偏冷兼活動不足"
+      ]
+    },
+    {
+      "id": "yangDeficiency-2",
+      "expected": "yangDeficiency",
+      "actual": "yangDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 97.727,
+      "core": [
+        "怕冷及手足冷",
+        "夜尿或浮腫",
+        "偏冷兼活動不足"
+      ]
+    },
+    {
+      "id": "yangDeficiency-3",
+      "expected": "yangDeficiency",
+      "actual": "yangDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 100,
+      "core": [
+        "怕冷及手足冷",
+        "夜尿或浮腫",
+        "偏冷兼活動不足"
+      ]
+    },
+    {
+      "id": "qiStagnation-1",
+      "expected": "qiStagnation",
+      "actual": "qiStagnation",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 94.444,
+      "core": [
+        "鬱悶及嘆氣",
+        "脹滿並在排氣後稍舒",
+        "食慾或睡眠隨狀態變化"
+      ]
+    },
+    {
+      "id": "qiStagnation-2",
+      "expected": "qiStagnation",
+      "actual": "qiStagnation",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 91.667,
+      "core": [
+        "鬱悶及嘆氣",
+        "脹滿並在排氣後稍舒",
+        "食慾或睡眠隨狀態變化"
+      ]
+    },
+    {
+      "id": "qiStagnation-3",
+      "expected": "qiStagnation",
+      "actual": "qiStagnation",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 97.222,
+      "core": [
+        "鬱悶及嘆氣",
+        "脹滿並在排氣後稍舒",
+        "食慾或睡眠隨狀態變化"
+      ]
+    },
+    {
+      "id": "bloodStasis-1",
+      "expected": "bloodStasis",
+      "actual": "bloodStasis",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 90,
+      "core": [
+        "面唇或舌色偏暗",
+        "容易瘀青",
+        "麻木兼暗滯表現"
+      ]
+    },
+    {
+      "id": "bloodStasis-2",
+      "expected": "bloodStasis",
+      "actual": "bloodStasis",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 90,
+      "core": [
+        "面唇或舌色偏暗",
+        "容易瘀青",
+        "麻木兼暗滯表現"
+      ]
+    },
+    {
+      "id": "bloodStasis-3",
+      "expected": "bloodStasis",
+      "actual": "bloodStasis",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 90,
+      "core": [
+        "面唇或舌色偏暗",
+        "容易瘀青",
+        "麻木兼暗滯表現"
+      ]
+    },
+    {
+      "id": "bloodDeficiency-1",
+      "expected": "bloodDeficiency",
+      "actual": "bloodDeficiency",
+      "passed": true,
+      "confidence": "中等",
+      "normalized": 80.952,
+      "core": [
+        "面唇或舌色偏淡",
+        "多夢易醒",
+        "抽筋或皮膚乾"
+      ]
+    },
+    {
+      "id": "bloodDeficiency-2",
+      "expected": "bloodDeficiency",
+      "actual": "bloodDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 85.714,
+      "core": [
+        "面唇或舌色偏淡",
+        "多夢易醒",
+        "抽筋或皮膚乾"
+      ]
+    },
+    {
+      "id": "bloodDeficiency-3",
+      "expected": "bloodDeficiency",
+      "actual": "bloodDeficiency",
+      "passed": true,
+      "confidence": "偏低",
+      "normalized": 76.19,
+      "core": [
+        "面唇或舌色偏淡",
+        "多夢易醒",
+        "抽筋或皮膚乾"
+      ]
+    },
+    {
+      "id": "fluidDeficiency-1",
+      "expected": "fluidDeficiency",
+      "actual": "fluidDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 100,
+      "core": [
+        "經常口乾",
+        "大便乾硬",
+        "皮膚乾或舌苔少"
+      ]
+    },
+    {
+      "id": "fluidDeficiency-2",
+      "expected": "fluidDeficiency",
+      "actual": "fluidDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 100,
+      "core": [
+        "經常口乾",
+        "大便乾硬",
+        "皮膚乾或舌苔少"
+      ]
+    },
+    {
+      "id": "fluidDeficiency-3",
+      "expected": "fluidDeficiency",
+      "actual": "fluidDeficiency",
+      "passed": true,
+      "confidence": "較高",
+      "normalized": 100,
+      "core": [
+        "經常口乾",
+        "大便乾硬",
+        "皮膚乾或舌苔少"
+      ]
+    }
+  ],
+  "randomSurvey": {
+    "seed": 20260720,
+    "count": 500,
+    "distribution": {
+      "no-clear-tendency": 76,
+      "fluidDeficiency": 40,
+      "yinDeficiency": 56,
+      "qiStagnation": 106,
+      "yangDeficiency": 26,
+      "dampHeat": 40,
+      "bloodDeficiency": 49,
+      "phlegmDampness": 29,
+      "qiDeficiency": 38,
+      "spleenYangDeficiency": 14,
+      "spleenQiDeficiency": 20,
+      "bloodStasis": 6
+    },
+    "qiDeficiencyResultRatio": 0.08962264150943396
+  }
+}

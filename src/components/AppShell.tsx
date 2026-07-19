@@ -2,6 +2,9 @@ import { BookOpenText, Home, Info, Leaf, LockKeyhole } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { APP_CONFIG, SHORT_DISCLAIMER } from "../config/app";
+import { useAppState } from "../state/AppState";
+import { MIGRATION_NOTICE } from "../utils/storage";
+import { PwaUpdatePrompt } from "./PwaUpdatePrompt";
 
 const navItems = [
   { to: "/", label: "首頁", icon: Home },
@@ -12,9 +15,11 @@ const navItems = [
 
 export function AppShell({ children }: { children: ReactNode }) {
   const location = useLocation();
+  const { migrationNotice, dismissMigration } = useAppState();
   const minimal = location.pathname === "/emergency";
   return (
     <div className="app-shell">
+      <PwaUpdatePrompt />
       {!minimal && (
         <header className="site-header">
           <Link className="brand" to="/" aria-label={`${APP_CONFIG.name}首頁`}>
@@ -26,7 +31,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
         </header>
       )}
-      <main id="main-content" className={minimal ? "emergency-main" : "main-content"}>{children}</main>
+      <main id="main-content" className={minimal ? "emergency-main" : "main-content"}>
+        {migrationNotice && <div className="notice warning migration-notice" role="status"><p>{MIGRATION_NOTICE}</p><button type="button" className="button ghost" onClick={dismissMigration}>知道了</button></div>}
+        {children}
+      </main>
       {!minimal && (
         <>
           <footer className="site-footer">

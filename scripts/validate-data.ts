@@ -12,6 +12,8 @@ import { classics } from "../src/data/classics/classics";
 import { safetyQuestions } from "../src/data/safety/safetyQuestions";
 import { prohibitedIngredients } from "../src/data/safety/prohibited";
 import { formulas } from "../src/data/formulas/formulas";
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
 
 const ajv = new Ajv2020({ allErrors: true, strict: false });
 const failures: string[] = [];
@@ -64,6 +66,12 @@ for (const classic of classics) {
 }
 const ingredientIds = new Set(ingredients.map((item) => item.id));
 const questionOptionIds = new Set(constitutionQuestions.flatMap((item) => item.options.map((option) => option.optionId)));
+const publishedDir = path.join(process.cwd(), "src", "data", "knowledge", "published");
+const publishedEntryIds = new Set<string>();
+for (const file of (await readdir(publishedDir)).filter((item) => item.endsWith(".json"))) {
+  const entries = JSON.parse(await readFile(path.join(publishedDir, file), "utf8")) as Array<{ id: string }>;
+  for (const entry of entries) publishedEntryIds.add(entry.id);
+}
 for (const formula of formulas) {
   if (formula.ingredients.length < 3 || formula.ingredients.length > 6) failures.push(`Formula ${formula.formulaId} must contain 3-6 fixed ingredients`);
   if (!formula.safetyComplete || formula.reviewStatus !== "approved") failures.push(`Formula ${formula.formulaId} is not approved with complete safety fields`);
@@ -74,10 +82,16 @@ for (const formula of formulas) {
   for (const group of formula.requiredAnswerGroups) for (const optionId of group.optionIds) if (!questionOptionIds.has(optionId)) failures.push(`Formula ${formula.formulaId} references missing answer option ${optionId}`);
   if (formula.doseText && !(formula.doseReviewed && formula.sourceVerified && formula.reviewStatus === "approved")) failures.push(`Formula ${formula.formulaId} has an unreviewed dose`);
   if (formula.sourceType === "product-owner-rule" && formula.sourceReferences.some((source) => /古方|倪海廈原方/u.test(source.title))) failures.push(`Formula ${formula.formulaId} mislabels a product rule as a classical formula`);
+  const knowledgeSources = formula.sourceReferences.filter((source) => source.knowledgeEntryId);
+  if (!knowledgeSources.length) failures.push(`Formula ${formula.formulaId} has no published KnowledgeEntry source`);
+  for (const source of knowledgeSources) if (!publishedEntryIds.has(source.knowledgeEntryId!)) failures.push(`Formula ${formula.formulaId} references missing KnowledgeEntry ${source.knowledgeEntryId}`);
+  if (formula.category === "traditional-formula-knowledge" && formula.displayMode !== "knowledge-only") failures.push(`High-risk classic ${formula.formulaId} must be knowledge-only`);
 }
 
 if (constitutionQuestions.length < 30 || constitutionQuestions.length > 45) failures.push(`Question count must be 30-45, got ${constitutionQuestions.length}`);
 if (patterns.length !== 12) failures.push(`Pattern count must be 12, got ${patterns.length}`);
+if (formulas.length < 24) failures.push(`Formula Library must contain at least 24 entries, got ${formulas.length}`);
+for (const pattern of patterns) if (formulas.filter((formula) => formula.suitablePatterns.includes(pattern.id)).length < 2) failures.push(`Pattern ${pattern.id} needs at least two fixed formulas`);
 
 if (failures.length) {
   console.error("Data validation failed:\n" + failures.map((item) => `- ${item}`).join("\n"));

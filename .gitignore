@@ -10,3 +10,12 @@ knowledge_sources/rejected/*
 !knowledge_sources/rejected/README.md
 src/data/knowledge/generated/*.json
 !src/data/knowledge/generated/.gitkeep
+knowledge_sources/local-generated/
+
+# The reviewed ancient-text publication layer is intentionally committed.
+!src/data/knowledge/published/
+!src/data/knowledge/published/**/*.json
+!src/data/knowledge/metadata/
+!src/data/knowledge/metadata/**/*.json
+!public/knowledge/
+!public/knowledge/**/*.json

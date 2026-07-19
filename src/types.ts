@@ -120,8 +120,45 @@ export type AnalysisResult = {
   contradictory: boolean;
   evidence: string[];
   scores: Record<PatternId, number>;
+  rawScores: Record<PatternId, number>;
+  normalizedScores: Record<PatternId, number>;
+  diagnostics: Record<PatternId, PatternScoreDiagnostic>;
   categorySupport: Record<PatternId, string[]>;
   answeredCount: number;
+  rankingGap?: number;
+  selectionReasons: string[];
+};
+
+export type PatternEvidenceGroup = {
+  id: string;
+  label: string;
+  minimumMatches: number;
+  optionIds: string[];
+};
+
+export type PatternDiagnosticRule = {
+  patternId: PatternId;
+  coreEvidenceGroups: PatternEvidenceGroup[];
+  minimumCoreGroups: number;
+  minimumSupportCount: number;
+  minimumCategoryCount: number;
+  minimumNormalizedScore: number;
+  contradictionOptionIds: string[];
+};
+
+export type PatternScoreDiagnostic = {
+  weightedEvidenceScore: number;
+  patternMaximumRelevantScore: number;
+  normalizedScore: number;
+  finalScore: number;
+  supportCount: number;
+  supportCategories: QuestionCategory[];
+  specificityScore: number;
+  contradictionCount: number;
+  coreEvidenceSatisfied: string[];
+  coreEvidenceRequired: number;
+  eligible: boolean;
+  contributions: Array<{ questionId: string; optionId: string; category: QuestionCategory; weight: number; core: boolean }>;
 };
 
 export type SafetyLevel = 0 | 1 | 2 | 3;
@@ -183,6 +220,8 @@ export type FormulaDefinition = {
   formulaId: string;
   name: string;
   formulaType: "rule-based-gentle-combination";
+  category: "daily-food" | "gentle-tea" | "traditional-formula-knowledge";
+  displayMode: "automated" | "knowledge-only";
   sourceType: "product-owner-rule" | "verified-classic";
   suitablePatterns: PatternId[];
   requiredAnswerGroups: Array<{ minimumMatches: number; optionIds: string[]; description: string }>;
@@ -221,4 +260,5 @@ export type StoredState = {
   questionnaireAnswers: AnswerMap;
   currentStep: number;
   updatedAt: string;
+  lastResult?: AnalysisResult;
 };

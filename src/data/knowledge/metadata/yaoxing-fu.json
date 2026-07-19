@@ -1,0 +1,89 @@
+{
+  "documentId": "yaoxing-fu",
+  "sourceFileName": "药性赋-古籍典藏-luckclub.pdf",
+  "bookTitle": "藥性賦",
+  "rightsStatus": "public-domain",
+  "publishable": true,
+  "sourceFileHash": "b3d75b55f942e9b954f2e9e17a816b469ea97a3fb1081fa68efca29e86715eb7",
+  "pageCount": 16,
+  "textLayerPages": 16,
+  "processedPages": 16,
+  "publishableAncientTextPages": 6,
+  "excludedPages": [
+    {
+      "page": 1,
+      "reasons": [
+        "封面／目錄／出版版面"
+      ]
+    },
+    {
+      "page": 2,
+      "reasons": [
+        "封面／目錄／出版版面"
+      ]
+    },
+    {
+      "page": 3,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 4,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 6,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 7,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 10,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 12,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 13,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 16,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    }
+  ],
+  "productionEntryCount": 88,
+  "sectionCount": 4,
+  "herbCount": 69,
+  "formulaCount": 0,
+  "publicationRule": "排除導言、白話及現代啟示；保留賦文完整句段。",
+  "importedAt": "2026-07-20T00:00:00.000Z",
+  "toolVersion": "2.0.0",
+  "reviewStatus": "approved",
+  "rightsAssessment": {
+    "scanRedistributionAllowed": false,
+    "ancientTextPublicationAllowed": true,
+    "containsModernCommentary": true,
+    "modernCommentaryPublicationAllowed": false,
+    "decisionReason": "PDF 掃描／排版不公開；只發布已明確分離、可追溯頁碼的公有領域古籍文字或古方事實資料，白話、註釋、導言及現代啟示全部排除。"
+  }
+}

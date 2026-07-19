@@ -269,3 +269,29 @@ blockquote { margin: 12px 0; padding-left: 18px; border-left: 3px solid var(--ja
   .result-page { padding: 0; }
   .result-card, .feature-card, .classics-result, .disclaimer-block { break-inside: avoid; box-shadow: none; }
 }
+
+.knowledge-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; margin: 1rem 0; }
+.knowledge-metrics > div { display: grid; gap: .2rem; padding: 1rem; border: 1px solid var(--line); border-radius: 16px; background: var(--paper, #fffdf7); }
+.knowledge-metrics strong { color: var(--green, #173f35); font-size: 1.65rem; }
+.book-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .7rem; margin: 1rem 0 1.4rem; }
+.book-card { display: grid; gap: .35rem; text-align: left; padding: .9rem; border: 1px solid var(--line); border-radius: 14px; background: #fff; color: inherit; cursor: pointer; }
+.book-card span { color: var(--muted); font-size: .83rem; }
+.book-card.active { border-color: var(--green); box-shadow: 0 0 0 2px color-mix(in srgb, var(--green) 18%, transparent); }
+.knowledge-detail { scroll-margin-top: 1rem; margin: 1rem 0; }
+.knowledge-detail blockquote { white-space: pre-wrap; line-height: 1.9; margin: 1rem 0; }
+.knowledge-detail code { overflow-wrap: anywhere; }
+.detail-navigation { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+.detail-navigation button { display: inline-flex; align-items: center; gap: .35rem; }
+mark { padding: 0 .08em; background: #ffe7a5; color: inherit; }
+.pwa-update { position: fixed; z-index: 100; left: 50%; bottom: 5rem; transform: translateX(-50%); width: min(92vw, 620px); display: flex; align-items: center; gap: .7rem; padding: .9rem; border: 1px solid #c79b38; border-radius: 16px; background: #fff8df; box-shadow: 0 14px 40px rgb(30 40 35 / .2); }
+.pwa-update p { margin: 0; flex: 1; }
+.migration-notice { margin: 1rem auto; max-width: 980px; }
+.debug-score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1rem; }
+.debug-score-grid dl { display: grid; grid-template-columns: 1fr 1.5fr; gap: .4rem .8rem; }
+.debug-score-grid pre { overflow: auto; max-height: 22rem; font-size: .75rem; }
+
+@media (max-width: 700px) {
+  .knowledge-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pwa-update { align-items: stretch; flex-wrap: wrap; bottom: 4.5rem; }
+  .pwa-update p { flex-basis: 100%; }
+}

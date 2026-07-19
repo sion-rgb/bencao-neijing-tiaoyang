@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
       includeAssets: ["favicon.svg"],
       manifest: {
         name: "本草內經・體質調養",
@@ -24,18 +24,25 @@ export default defineConfig({
         ]
       },
       workbox: {
+        cacheId: "app-shell-v2",
+        cleanupOutdatedCaches: true,
         navigateFallback: "index.html",
         globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
         runtimeCaching: [
           {
+            urlPattern: ({ request }) => request.mode === "navigate",
+            handler: "NetworkFirst",
+            options: { cacheName: "app-shell-v2", networkTimeoutSeconds: 4 }
+          },
+          {
             urlPattern: /\/knowledge\/(catalog|indexes)\/.+\.json$|\/knowledge\/catalog\.json$/,
-            handler: "StaleWhileRevalidate",
-            options: { cacheName: "knowledge-indexes" }
+            handler: "NetworkFirst",
+            options: { cacheName: "knowledge-indexes-v2", networkTimeoutSeconds: 5 }
           },
           {
             urlPattern: /\/knowledge\/books\/.+\.json$/,
             handler: "CacheFirst",
-            options: { cacheName: "knowledge-chunks", expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 30 } }
+            options: { cacheName: "knowledge-chunks-v2", expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30 } }
           }
         ]
       }

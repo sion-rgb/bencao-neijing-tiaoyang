@@ -1,0 +1,168 @@
+{
+  "documentId": "qijing-bamai-kao",
+  "sourceFileName": "奇经八脉考-古籍典藏-luckclub.pdf",
+  "bookTitle": "奇經八脈考",
+  "author": "李時珍",
+  "rightsStatus": "public-domain",
+  "publishable": true,
+  "sourceFileHash": "2369d91b23ef123d53dc50321a04a0e7f0bc114216fddb2e7a806b1df33a73b8",
+  "pageCount": 46,
+  "textLayerPages": 46,
+  "processedPages": 46,
+  "publishableAncientTextPages": 23,
+  "excludedPages": [
+    {
+      "page": 1,
+      "reasons": [
+        "封面／目錄／出版版面"
+      ]
+    },
+    {
+      "page": 2,
+      "reasons": [
+        "封面／目錄／出版版面"
+      ]
+    },
+    {
+      "page": 3,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 4,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 6,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 8,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 11,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 12,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 14,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 16,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 19,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 20,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 23,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 26,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 27,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 29,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 31,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 34,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 36,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 38,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 41,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 45,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    },
+    {
+      "page": 46,
+      "reasons": [
+        "沒有可明確分離的古籍原文，或屬白話／現代編輯內容"
+      ]
+    }
+  ],
+  "productionEntryCount": 190,
+  "sectionCount": 15,
+  "herbCount": 25,
+  "formulaCount": 0,
+  "publicationRule": "排除導言、白話及現代啟示；按八脈篇章及原文段落分段。",
+  "importedAt": "2026-07-20T00:00:00.000Z",
+  "toolVersion": "2.0.0",
+  "reviewStatus": "approved",
+  "rightsAssessment": {
+    "scanRedistributionAllowed": false,
+    "ancientTextPublicationAllowed": true,
+    "containsModernCommentary": true,
+    "modernCommentaryPublicationAllowed": false,
+    "decisionReason": "PDF 掃描／排版不公開；只發布已明確分離、可追溯頁碼的公有領域古籍文字或古方事實資料，白話、註釋、導言及現代啟示全部排除。"
+  }
+}

@@ -1,15 +1,17 @@
 {
   "name": "bencao-neijing-tiaoyang",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "preview": "vite preview",
     "validate:data": "tsx scripts/validate-data.ts",
     "validate:knowledge": "tsx tools/knowledge/validate-knowledge.ts",
+    "audit:scoring": "tsx scripts/audit-scoring.ts",
     "ingest:pdf": "tsx tools/pdf_ingest/cli.ts",
     "convert:traditional": "tsx tools/traditional_conversion/cli.ts",
+    "publish:ancient-text": "tsx tools/knowledge/publish-ancient-text.ts",
     "build:knowledge-index": "tsx tools/knowledge/build-index.ts",
     "prebuild": "npm run validate:data && npm run validate:knowledge && npm run build:knowledge-index",
     "build": "tsc -b && vite build",
