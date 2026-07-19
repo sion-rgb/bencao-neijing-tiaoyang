@@ -7,7 +7,7 @@ describe("安全分級與選材封鎖", () => {
   it.each([
     ["G6PD", { g6pd: ["g6pd_yes"] }, 1],
     ["一型糖尿病", { diabetes: ["diabetes_type1"] }, 1],
-    ["懷孕", { pregnancy: ["pregnancy_yes"] }, 1],
+    ["懷孕", { sex: ["sex_female"], pregnancy: ["pregnancy_yes"], breastfeeding: ["breastfeeding_no"] }, 1],
     ["未滿18歲", { age: ["age_under18"] }, 1]
   ])("%s 不得輸出任何中藥、草藥或代茶飲", (_label, override, expectedLevel) => {
     const safety = assessSafety({ ...safeAnswers, ...override });

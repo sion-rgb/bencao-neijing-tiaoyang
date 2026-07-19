@@ -1,0 +1,12 @@
+[
+  { "documentId": "yixue-yuanliu-lun", "sourceFileName": "医学源流论-古籍典藏-luckclub.pdf", "bookTitle": "醫學源流論", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "zhongyi-neike-fangji-suoyin", "sourceFileName": "中医内科方剂索引-古籍典藏-luckclub.pdf", "bookTitle": "中醫內科方劑索引", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "yixue-sanzijing", "sourceFileName": "医学三字经-古籍典藏-luckclub.pdf", "bookTitle": "醫學三字經", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "qijing-bamai-kao", "sourceFileName": "奇经八脉考-古籍典藏-luckclub.pdf", "bookTitle": "奇經八脈考", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "huangdi-neijing", "sourceFileName": "黄帝内经-古籍典藏-luckclub.pdf", "bookTitle": "黃帝內經", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "bencao-gangmu", "sourceFileName": "本草纲目-古籍典藏-luckclub.pdf", "bookTitle": "本草綱目", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "shennong-bencao-jing", "sourceFileName": "神农本草经-古籍典藏-luckclub.pdf", "bookTitle": "神農本草經", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "yaoxing-fu", "sourceFileName": "药性赋-古籍典藏-luckclub.pdf", "bookTitle": "藥性賦", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "wenre-lun", "sourceFileName": "温热论-古籍典藏-luckclub.pdf", "bookTitle": "溫熱論", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" },
+  { "documentId": "xuezheng-lun", "sourceFileName": "血证论-古籍典藏-luckclub.pdf", "bookTitle": "血證論", "rightsStatus": "unknown", "publishable": false, "toolVersion": "1.0.0", "reviewStatus": "draft" }
+]

@@ -9,5 +9,5 @@ export const level1Flags = new Set([
 ]);
 
 export const level2Flags = new Set([
-  "type2Diabetes", "glucoseMedicine", "anticoagulant", "polypharmacy", "upcomingSurgery", "olderAdult", "ulcerBleedingHistory", "epilepsy", "multipleTcm", "multipleSupplements"
+  "anticoagulant", "polypharmacy", "upcomingSurgery", "olderAdult", "ulcerBleedingHistory", "epilepsy", "multipleTcm", "multipleSupplements"
 ]);

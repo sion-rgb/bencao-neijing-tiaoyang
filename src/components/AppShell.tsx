@@ -30,7 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       {!minimal && (
         <>
           <footer className="site-footer">
-            <p>{SHORT_DISCLAIMER}</p>
+            <div><p>{SHORT_DISCLAIMER}</p><p className="footer-links"><a href="https://github.com/sion-rgb/bencao-neijing-tiaoyang" target="_blank" rel="noreferrer">GitHub原始碼</a><a href="https://sion-rgb.github.io/bencao-neijing-tiaoyang/" target="_blank" rel="noreferrer">線上版本</a><Link to="/guidelines">免責聲明</Link><Link to="/privacy">私隱說明</Link></p></div>
             <p>版本 {APP_CONFIG.version} ・ 最後更新：{APP_CONFIG.lastUpdated}</p>
           </footer>
           <nav className="mobile-nav" aria-label="流動版主要導覽">

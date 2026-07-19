@@ -21,8 +21,8 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; min-height: 100vh; background: var(--paper); font-size: 16px; line-height: 1.7; }
-button, input { font: inherit; }
+body { margin: 0; min-width: 320px; min-height: 100vh; overflow-x: hidden; background: var(--paper); font-size: 16px; line-height: 1.7; }
+button, input, select { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { color: var(--forest-2); text-underline-offset: 3px; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #4f8b73; outline-offset: 3px; }
@@ -33,7 +33,7 @@ h2 { font-size: clamp(1.45rem, 4vw, 2.25rem); }
 ul { padding-left: 1.25rem; }
 li + li { margin-top: .45rem; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-.app-shell { min-height: 100vh; }
+.app-shell { min-height: 100vh; overflow-x: clip; }
 .main-content { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding-bottom: 100px; }
 .site-header { width: min(1240px, calc(100% - 32px)); margin: 0 auto; min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); }
 .brand { display: flex; align-items: center; gap: 12px; color: var(--forest); text-decoration: none; }
@@ -66,6 +66,7 @@ li + li { margin-top: .45rem; }
 .notice { display: flex; align-items: flex-start; gap: 12px; padding: 18px; border: 1px solid #b9d1c0; border-radius: 14px; background: #eef6f0; color: var(--forest); }
 .notice.compact { margin-top: 32px; max-width: 670px; }
 .notice.warning { background: #fff6ed; border-color: #e9c2a5; color: #6a351b; }
+.notice.danger { background: #fff0ef; border-color: #dca8a4; color: #69251f; }
 .notice p { margin: 0; }
 .section { padding: 76px 0; border-top: 1px solid var(--line); }
 .section-heading { margin-bottom: 28px; }
@@ -85,6 +86,8 @@ li + li { margin-top: .45rem; }
 .quick-links small { display: block; color: var(--muted); }
 .site-footer { border-top: 1px solid var(--line); padding: 32px max(24px, calc((100vw - 1180px) / 2)); display: flex; justify-content: space-between; gap: 20px; color: var(--muted); font-size: .85rem; }
 .site-footer p { margin: 0; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 10px !important; }
+.footer-links a { color: var(--forest); font-weight: 700; }
 
 .narrow-page, .question-page { width: min(720px, 100%); margin: 0 auto; padding: 70px 0; }
 .page-intro { margin: 70px 0 44px; max-width: 800px; }
@@ -167,6 +170,15 @@ dd { margin: 4px 0 0; color: #47544d; }
 .ingredient-card dl { font-size: .9rem; }
 .ingredient-card dt { margin-top: 10px; }
 .ingredient-disclaimer { padding: 18px; margin-top: 14px; border-left: 4px solid var(--warning); background: #fff6ed; color: #67391f; font-weight: 600; }
+.medical-notices { display: grid; gap: 14px; margin: 26px 0; }
+.medical-notice-card h2 { margin: 0 0 8px; font-size: 1.2rem; }
+.medical-notice-card p + p, .medical-notice-card p + ul { margin-top: 10px; }
+.formula-section { padding-top: 20px; }
+.formula-card { margin-bottom: 18px; }
+.formula-ingredients { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0; list-style: none; }
+.formula-ingredients li { border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.formula-ingredients span { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: var(--jade-light); color: var(--forest); font-size: .78rem; font-weight: 700; }
+.formula-ingredients p { margin: 8px 0 0; }
 .classics-result, .disclaimer-block { padding: clamp(24px, 5vw, 42px); margin: 22px 0; }
 .classics-result article { margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--line); }
 .classics-result article > span { color: var(--muted); font-size: .85rem; }
@@ -181,6 +193,13 @@ blockquote { margin: 12px 0; padding-left: 18px; border-left: 3px solid var(--ja
 .search-panel { display: flex; justify-content: space-between; gap: 18px; padding: 18px; background: var(--white); border: 1px solid var(--line); border-radius: 16px; }
 .search-panel label { flex: 1; display: flex; align-items: center; gap: 10px; }
 .search-panel input { width: 100%; min-height: 44px; border: 0; background: transparent; color: var(--ink); }
+.knowledge-search-panel { display: grid; }
+.knowledge-filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.knowledge-filters label { display: grid; gap: 5px; color: var(--muted); font-size: .8rem; }
+.knowledge-filters select { min-height: 44px; width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 0 10px; background: var(--white); color: var(--ink); }
+.knowledge-card > .button { margin-top: 14px; }
+.source-detail { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; }
+.source-detail p { margin: 4px 0; overflow-wrap: anywhere; }
 .filter-row { display: flex; gap: 6px; }
 .filter-row button { min-height: 44px; border: 1px solid var(--line); border-radius: 999px; padding: 8px 12px; background: transparent; cursor: pointer; }
 .filter-row button.active { background: var(--forest); color: white; border-color: var(--forest); }
@@ -219,7 +238,7 @@ blockquote { margin: 12px 0; padding-left: 18px; border-left: 3px solid var(--ja
   .hero { padding: 64px 0 60px; }
   .hero::after { right: -55vw; width: 110vw; opacity: .7; }
   .hero-actions .button { width: 100%; }
-  .steps-grid, .quick-links, .editorial-band, .result-grid, .detail-grid, .ingredient-grid, .classic-columns, .privacy-grid, .safety-summary { grid-template-columns: 1fr; }
+  .steps-grid, .quick-links, .editorial-band, .result-grid, .detail-grid, .ingredient-grid, .classic-columns, .privacy-grid, .safety-summary, .formula-ingredients, .knowledge-filters { grid-template-columns: 1fr; }
   .editorial-band { gap: 20px; padding-top: 50px; padding-bottom: 50px; }
   .step-card { min-height: 220px; }
   .step-card h3 { margin-top: 34px; }

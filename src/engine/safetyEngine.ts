@@ -1,6 +1,7 @@
 import { level1Flags, level2Flags } from "../data/safety/prohibited";
-import { safetyQuestions } from "../data/safety/safetyQuestions";
-import type { AnswerMap, SafetyAssessment } from "../types";
+import { getVisibleSafetyQuestions } from "../data/safety/safetyQuestions";
+import { medicalConditionPolicies } from "../data/safety/medicalPolicies";
+import type { AnswerMap, MedicalNoticeFlag, SafetyAssessment } from "../types";
 
 const reasonLabels: Record<string, string> = {
   emergency: "你選擇了目前出現緊急警號",
@@ -11,7 +12,8 @@ const reasonLabels: Record<string, string> = {
   type1Diabetes: "一型糖尿病",
   type2Diabetes: "二型糖尿病",
   gestationalDiabetes: "妊娠糖尿病",
-  glucoseMedicine: "正在使用胰島素或降血糖藥",
+  glucoseMedicine: "正在使用降血糖藥",
+  insulinUse: "正在使用胰島素",
   liverDisease: "有肝臟疾病",
   kidneyDisease: "有腎臟疾病",
   heartDisease: "有心臟疾病",
@@ -32,7 +34,7 @@ const reasonLabels: Record<string, string> = {
 
 export function collectSafetyFlags(answers: AnswerMap): string[] {
   const flags = new Set<string>();
-  for (const question of safetyQuestions) {
+  for (const question of getVisibleSafetyQuestions(answers)) {
     const selected = answers[question.id] ?? [];
     if (selected.length === 0) flags.add("safetyUncertain");
     for (const optionId of selected) {
@@ -43,10 +45,20 @@ export function collectSafetyFlags(answers: AnswerMap): string[] {
   return [...flags];
 }
 
+function collectMedicalNotices(flags: string[]): MedicalNoticeFlag[] {
+  const notices = new Set<MedicalNoticeFlag>();
+  if (flags.includes("type2Diabetes") && medicalConditionPolicies.type2Diabetes.showMedicalNotice) notices.add(medicalConditionPolicies.type2Diabetes.noticeFlag);
+  if (flags.includes("glucoseMedicine")) notices.add("glucose-lowering-medication");
+  if (flags.includes("insulinUse")) notices.add("insulin-use");
+  if (flags.includes("hypoglycaemiaRisk") || flags.includes("glucoseMedicine") || flags.includes("insulinUse")) notices.add("hypoglycaemia-risk");
+  return [...notices];
+}
+
 export function assessSafety(answers: AnswerMap): SafetyAssessment {
   const flags = collectSafetyFlags(answers);
+  const medicalNotices = collectMedicalNotices(flags);
   if (flags.includes("emergency")) {
-    return { level: 0, reasons: [reasonLabels.emergency], flags, allowIngredients: false, conservativeOnly: true };
+    return { level: 0, reasons: [reasonLabels.emergency], flags, medicalNotices, allowIngredients: false, allowApprovedFormulas: false, conservativeOnly: true };
   }
 
   const hasLevel1 = flags.some((flag) => level1Flags.has(flag));
@@ -55,7 +67,9 @@ export function assessSafety(answers: AnswerMap): SafetyAssessment {
       level: 1,
       reasons: flags.filter((flag) => level1Flags.has(flag)).map((flag) => reasonLabels[flag]).filter(Boolean),
       flags,
+      medicalNotices,
       allowIngredients: false,
+      allowApprovedFormulas: false,
       conservativeOnly: true
     };
   }
@@ -66,10 +80,24 @@ export function assessSafety(answers: AnswerMap): SafetyAssessment {
       level: 2,
       reasons: flags.filter((flag) => level2Flags.has(flag)).map((flag) => reasonLabels[flag]).filter(Boolean),
       flags,
+      medicalNotices,
       allowIngredients: false,
+      allowApprovedFormulas: false,
       conservativeOnly: true
     };
   }
 
-  return { level: 3, reasons: ["安全篩查資料完整，未選擇已知限制條件"], flags, allowIngredients: true, conservativeOnly: false };
+  const noticeReasons = flags
+    .filter((flag) => flag === "type2Diabetes" || flag === "glucoseMedicine" || flag === "insulinUse")
+    .map((flag) => reasonLabels[flag])
+    .filter(Boolean);
+  return {
+    level: 3,
+    reasons: noticeReasons.length ? noticeReasons : ["安全篩查資料完整，未選擇已知限制條件"],
+    flags,
+    medicalNotices,
+    allowIngredients: !flags.includes("glucoseMedicine"),
+    allowApprovedFormulas: true,
+    conservativeOnly: false
+  };
 }

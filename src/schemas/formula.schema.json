@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "formula.schema.json",
+  "title": "FormulaDefinition",
+  "type": "object",
+  "required": ["formulaId", "name", "formulaType", "sourceType", "suitablePatterns", "requiredAnswerGroups", "exclusionFlags", "ingredients", "optionalIngredients", "minimumIngredientCount", "maximumIngredientCount", "traditionalRationale", "suitableAnswerDescription", "unsuitableWhen", "usageForm", "stopConditions", "sourceReferences", "medicationSafety", "safetyComplete", "sourceVerified", "doseReviewed", "reviewStatus", "version", "lastUpdated"],
+  "properties": {
+    "formulaId": { "type": "string", "minLength": 1 }, "name": { "type": "string", "minLength": 1 },
+    "formulaType": { "const": "rule-based-gentle-combination" }, "sourceType": { "enum": ["product-owner-rule", "verified-classic"] },
+    "suitablePatterns": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "requiredAnswerGroups": { "type": "array", "minItems": 1 }, "exclusionFlags": { "type": "array", "items": { "type": "string" } },
+    "ingredients": { "type": "array", "minItems": 3, "maxItems": 6 }, "optionalIngredients": { "type": "array" },
+    "minimumIngredientCount": { "type": "integer", "minimum": 3, "maximum": 6 }, "maximumIngredientCount": { "type": "integer", "minimum": 3, "maximum": 6 },
+    "traditionalRationale": { "type": "string", "minLength": 1 }, "suitableAnswerDescription": { "type": "string", "minLength": 1 },
+    "unsuitableWhen": { "type": "array", "minItems": 1 }, "usageForm": { "type": "string", "minLength": 1 }, "stopConditions": { "type": "array", "minItems": 1 },
+    "sourceReferences": { "type": "array", "minItems": 1 }, "medicationSafety": { "type": "object", "required": ["diabetesMedicationReviewed", "insulinUseReviewed", "hypoglycaemiaWarningRequired", "knownInteractionNotes", "safetySources"] },
+    "safetyComplete": { "type": "boolean" }, "sourceVerified": { "type": "boolean" }, "doseText": { "type": "string" }, "doseSource": { "type": "object" }, "doseReviewed": { "type": "boolean" },
+    "reviewStatus": { "enum": ["draft", "tcm-reviewed", "safety-reviewed", "approved"] }, "version": { "type": "string" }, "lastUpdated": { "type": "string" }
+  },
+  "additionalProperties": false
+}

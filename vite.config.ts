@@ -23,7 +23,22 @@ export default defineConfig({
           { "src": "pwa-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
         ]
       },
-      workbox: { navigateFallback: "index.html" }
+      workbox: {
+        navigateFallback: "index.html",
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,webmanifest}"],
+        runtimeCaching: [
+          {
+            urlPattern: /\/knowledge\/(catalog|indexes)\/.+\.json$|\/knowledge\/catalog\.json$/,
+            handler: "StaleWhileRevalidate",
+            options: { cacheName: "knowledge-indexes" }
+          },
+          {
+            urlPattern: /\/knowledge\/books\/.+\.json$/,
+            handler: "CacheFirst",
+            options: { cacheName: "knowledge-chunks", expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 30 } }
+          }
+        ]
+      }
     })
   ]
 });

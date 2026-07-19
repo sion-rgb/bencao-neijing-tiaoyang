@@ -3,12 +3,15 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { APP_CONFIG } from "../config/app";
 import { disclaimerParagraphs } from "../content/disclaimer";
 import { classics } from "../data/classics/classics";
+import { ingredients } from "../data/ingredients/ingredients";
 import { patternMap } from "../data/patterns/patterns";
+import { getDailyFoodDirections } from "../data/recommendations/foodDirections";
 import { analyseConstitution } from "../engine/scoringEngine";
-import { getAllowedIngredients, getLifestyleRecommendation, INGREDIENT_DISCLAIMER } from "../engine/recommendationEngine";
+import { getApprovedFormulas, getLifestyleRecommendation, INGREDIENT_DISCLAIMER } from "../engine/recommendationEngine";
 import { assessSafety } from "../engine/safetyEngine";
 import { useAppState } from "../state/AppState";
 import { exportResult } from "../utils/storage";
+import type { SafetyAssessment } from "../types";
 
 const confidenceText = {
   較高: "回答較完整、支持來自多個範疇，而且未見明顯矛盾。這仍不是診斷機率。",
@@ -16,6 +19,18 @@ const confidenceText = {
   偏低: "支持範疇較少、回答有矛盾，或仍有較多未回答項目。",
   資料不足: "目前回答不足以形成可靠的體質傾向。"
 } as const;
+
+function MedicalNoticeCards({ safety }: { safety: SafetyAssessment }) {
+  const hasType2 = safety.medicalNotices.includes("type2-diabetes");
+  const hasMedication = safety.medicalNotices.includes("glucose-lowering-medication") || safety.medicalNotices.includes("insulin-use");
+  if (!hasType2 && !hasMedication) return null;
+  return (
+    <section className="medical-notices" aria-label="糖尿病使用者注意事項">
+      {hasType2 && <article className="notice warning medical-notice-card"><AlertTriangle aria-hidden="true" /><div><h2>二型糖尿病使用者注意事項</h2><p>你已表示有二型糖尿病。本工具仍可按你提供的傳統中醫症狀整理體質及溫和配伍參考，但結果不代表血糖控制情況，也不應用作更改胰島素、降血糖藥或原有治療。</p><ul><li>本工具的中醫體質結果不代表血糖控制情況，亦不提供降血糖保證。</li><li>不應因本結果自行停用、減少或更改胰島素或降血糖藥。</li><li>食療、代茶飲及中藥配伍也可能影響個人身體反應；開始新的配伍後，應留意身體反應及原有血糖監測安排。</li><li>如出現冒冷汗、發抖、心悸、頭暈、神志不清、嚴重口渴、不斷小便、噁心、嘔吐或呼吸異常，停止使用本工具並尋求協助。</li></ul></div></article>}
+      {hasMedication && <article className="notice danger medical-notice-card"><AlertTriangle aria-hidden="true" /><div><h2>胰島素／降血糖藥加強注意事項</h2><p>你仍可查看體質結果，但只會顯示已完成糖尿病用藥安全欄位審核的固定配伍。未完成交互作用資料的配伍不會顯示，系統不會猜測安全性。</p><p>任何配伍都不得代替藥物，也不應用作自行減藥或停藥；本工具不提供以「降血糖」為目的的建議。</p></div></article>}
+    </section>
+  );
+}
 
 export function ResultPage() {
   const { state, resetQuestionnaire } = useAppState();
@@ -35,6 +50,7 @@ export function ResultPage() {
         <span className="kicker">分析結果</span>
         <h1>{result.status === "insufficient" ? "目前資料不足" : "目前未見明顯偏向"}</h1>
         <p>{result.status === "insufficient" ? `你目前回答了 ${result.answeredCount} 題。為避免強行生成結果，請先完成更多不同範疇的問題。` : "各項分數未達到跨三個範疇的最低支持條件，因此不會強行指定單一體質。"}</p>
+        <MedicalNoticeCards safety={safety} />
         <div className="card"><h2>可信程度：{result.confidence}</h2><p>{confidenceText[result.confidence]}</p></div>
         <button className="button primary full" type="button" onClick={() => navigate("/questionnaire")}>返回問卷繼續回答</button>
         <Link className="button ghost full" to="/guidelines">閱讀使用須知</Link>
@@ -45,7 +61,8 @@ export function ResultPage() {
   const primary = patternMap[result.primary];
   const secondary = result.secondary ? patternMap[result.secondary] : undefined;
   const lifestyle = getLifestyleRecommendation(result.primary);
-  const allowedIngredients = getAllowedIngredients(result.primary, safety);
+  const dailyFoodDirections = getDailyFoodDirections(result.primary);
+  const selectedFormulas = getApprovedFormulas(result.primary, state.questionnaireAnswers, safety);
   const classicEntries = classics.filter((entry) => primary.classicIds.includes(entry.id) && entry.reviewStatus === "approved" && entry.sourceStatus === "verified");
   const exported = {
     app: { name: APP_CONFIG.name, version: APP_CONFIG.version },
@@ -87,13 +104,32 @@ export function ResultPage() {
         <dl className="detail-grid"><div><dt>建議方式</dt><dd>{lifestyle.method}</dd></div><div><dt>建議時間</dt><dd>{lifestyle.timing}</dd></div><div><dt>最長使用期</dt><dd>{lifestyle.maxDuration}</dd></div><div><dt>不適合情況</dt><dd>{lifestyle.unsuitableFor}</dd></div><div><dt>何時停止</dt><dd>{lifestyle.stopWhen}</dd></div><div><dt>是否需確認</dt><dd>{lifestyle.professionalReview}</dd></div></dl>
       </section>
 
+      <MedicalNoticeCards safety={safety} />
+
       <section className="ingredient-section">
-        <div className="section-heading"><span>食療選材參考</span><h2>{safety.allowIngredients ? "先生活，後選材" : "本次不顯示中藥或代茶飲選材"}</h2></div>
-        {!safety.allowIngredients ? (
+        <div className="section-heading"><span>日常食材方向</span><h2>普通食物，不稱為配方</h2></div>
+        <div className="result-card"><ul>{dailyFoodDirections.map((direction) => <li key={direction}>{direction}</li>)}</ul><p className="card-footnote">二型糖尿病使用者應按原有膳食及血糖監測安排處理份量；這些方向不代表可改善或控制血糖。</p></div>
+      </section>
+
+      <section className="ingredient-section formula-section">
+        <div className="section-heading"><span>完整溫和配伍參考</span><h2>{safety.allowApprovedFormulas ? "只從固定且已批准的 Formula Library 選擇" : "本次不顯示中藥或代茶飲配伍"}</h2></div>
+        {!safety.allowApprovedFormulas ? (
           <div className="notice warning"><AlertTriangle aria-hidden="true" /><div><strong>安全級別 Level {safety.level}</strong><p>{safety.reasons.join("；")}。本工具只提供一般作息、活動及普通食物方向，不顯示中藥名稱、複方、劑量或煎煮方法。</p></div></div>
-        ) : allowedIngredients.length ? (
-          <><div className="ingredient-grid">{allowedIngredients.map((item) => <article key={item.id} className="ingredient-card"><span>{item.nature}</span><h3>{item.name}</h3><p>{item.traditionalUse}</p><dl><dt>參考形式</dt><dd>{item.suggestedForm}</dd><dt>最長時間</dt><dd>{item.maxDuration}</dd><dt>不適合或應停止</dt><dd>{item.allergyNote}</dd><dt>專業確認</dt><dd>{item.interactionNote}</dd></dl></article>)}</div><p className="ingredient-disclaimer">{INGREDIENT_DISCLAIMER}</p></>
-        ) : <div className="notice"><ShieldCheck aria-hidden="true" /><p>即使安全級別允許，目前也沒有同時通過體質配對、禁忌與完整安全資料的選材，因此不提供選材建議。</p></div>}
+        ) : selectedFormulas.length ? selectedFormulas.map(({ formula, ingredients: formulaIngredients, selectionReasons }) => (
+          <article key={formula.formulaId} className="feature-card formula-card">
+            <div className="feature-label">審核狀態：{formula.reviewStatus}・版本 {formula.version}</div>
+            <h2>{formula.name}</h2>
+            <p><strong>適用體質傾向：</strong>{formula.suitablePatterns.map((id) => patternMap[id].name).join("、")}</p>
+            <h3>配伍組成</h3>
+            <ul className="formula-ingredients">{formulaIngredients.map((item) => {
+              const ingredient = ingredients.find((candidate) => candidate.id === item.ingredientId);
+              return <li key={item.ingredientId}><strong>{ingredient?.name ?? item.ingredientId}</strong><span>{item.role}</span><p>{item.reason}</p></li>;
+            })}</ul>
+            <dl className="detail-grid"><div><dt>傳統中醫配伍思路</dt><dd>{formula.traditionalRationale}</dd></div><div><dt>選擇原因</dt><dd>{selectionReasons.join("；")}</dd></div><div><dt>不適合情況</dt><dd>{formula.unsuitableWhen.join("；")}</dd></div><div><dt>使用形式</dt><dd>{formula.usageForm}</dd></div><div><dt>停止條件</dt><dd>{formula.stopConditions.join("；")}</dd></div><div><dt>來源依據</dt><dd>{formula.sourceReferences.map((source) => `${source.title}${source.note ? `（${source.note}）` : ""}`).join("；")}</dd></div></dl>
+            {formula.doseText && formula.doseReviewed && formula.sourceVerified && formula.reviewStatus === "approved" && <p><strong>經審核份量：</strong>{formula.doseText}</p>}
+            <p className="ingredient-disclaimer">{INGREDIENT_DISCLAIMER}</p>
+          </article>
+        )) : <div className="notice"><ShieldCheck aria-hidden="true" /><div><strong>目前沒有符合全部條件的已審核配伍</strong><p>{safety.medicalNotices.includes("glucose-lowering-medication") ? "正在使用胰島素或降血糖藥時，未完成相關用藥安全欄位的配伍不會顯示。" : "完整配伍需要至少三項氣虛表現及一項脾胃表現；單一疲倦或單一山藥不會形成配伍。"}</p></div></div>}
       </section>
 
       <section className="classics-result"><div className="card-title"><BookOpenText aria-hidden="true" /><h2>經典依據</h2></div>{classicEntries.map((entry) => <article key={entry.id}><span>{entry.book}・{entry.chapter}</span><blockquote>「{entry.originalText}」</blockquote><p>{entry.modernSummary}</p><a href={entry.sourceUrl} target="_blank" rel="noreferrer">查看公有領域原文來源</a></article>)}</section>

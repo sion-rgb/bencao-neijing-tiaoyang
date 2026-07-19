@@ -2,7 +2,7 @@ import { constitutionQuestions } from "../src/data/questions/constitutionQuestio
 import type { AnswerMap } from "../src/types";
 
 export const safeAnswers: AnswerMap = {
-  age: ["age_18_39"], sex: ["sex_male"], pregnancy: ["pregnancy_na"], breastfeeding: ["breastfeeding_na"],
+  age: ["age_18_39"], sex: ["sex_male"],
   g6pd: ["g6pd_no"], diabetes: ["diabetes_none"], glucose_medicine: ["glucose_medicine_na"],
   conditions: ["condition_none"], medicines: ["medicine_none"], surgery: ["surgery_no"], allergy: ["allergy_no"], emergency: ["emergency_none"]
 };

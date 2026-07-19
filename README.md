@@ -1,25 +1,34 @@
 # 本草內經・體質調養
 
+🌐 **線上使用：**<br>
+https://sion-rgb.github.io/bencao-neijing-tiaoyang/
+
+[立即開啟本草內經・體質調養](https://sion-rgb.github.io/bencao-neijing-tiaoyang/) ・ [GitHub Pages 部署狀態](https://github.com/sion-rgb/bencao-neijing-tiaoyang/actions/workflows/deploy.yml)
+
 手機優先、可安裝的繁體中文 PWA，以傳統中醫文化框架整理體質傾向與一般養生方向。整個應用在瀏覽器內以確定性規則運作，沒有 AI、API、後端、登入、追蹤或健康資料上傳。
 
 > 本專案只供傳統中醫文化及養生教育參考，不構成醫療診斷、治療、處方或個人化醫療建議。
 
 ## 功能
 
-- 首次使用知情確認及12組安全篩查問題
+- 首次使用知情確認及條件式安全篩查；男性不會看到或被計入懷孕／哺乳問題
 - 緊急警號立即停止，不生成體質或選材結果
 - 43題繁體中文體質問卷，支援上一步、暫存、恢復、跳過選填題與重新開始
 - 12種體質／證候傾向、主要及次要傾向、矛盾與資料不足處理
-- Level 0–3安全分級；安全資料不參與體質計分
+- Level 0–3安全分級；二型糖尿病是獨立注意狀態，不參與體質計分或自動封鎖結果
+- 固定且可審核的 Formula Library，不會在執行時拼湊藥材或以單味山藥當作完整配伍
 - 白名單、全域禁止清單、條件禁忌及安全欄位完整性閘門
-- 經典資料庫、搜尋、分類、收藏及原文／現代整理分欄
+- 大型經典資料庫、全文搜尋、多欄篩選、收藏、引用複製及繁體轉寫／簡體底本切換
+- 完全本機的 PDF 文字層擷取、選配 OCR、OpenCC `s2hk` 轉換、來源雜湊及版權發布閘門
 - localStorage版本管理、清除所有本機資料、JSON匯出及列印
 - PWA離線快取、手機優先響應式介面、鍵盤及ARIA支援
 - JSON Schema、build前資料驗證及Vitest測試
 
 ## 安裝與開發
 
-需求：Node.js 20或以上、npm 10或以上。
+🌐 [先使用線上版本](https://sion-rgb.github.io/bencao-neijing-tiaoyang/)
+
+需求：Node.js 22.13或以上、npm 10或以上。
 
 ```bash
 npm install
@@ -39,14 +48,39 @@ npm run preview
 
 ```bash
 npm run validate:data
+npm run validate:knowledge
 npm run typecheck
 npm test
 npm run build
 ```
 
-`npm run build`會先執行資料驗證。如選材缺少安全資料、已批准經典缺少來源、禁止選材出現在資料、問題引用不存在的體質，或內容ID失效，build會失敗。輸出位於`dist/`。
+`npm run build`會先執行資料驗證、知識庫驗證及Production索引重建。如選材或Formula缺少安全資料、已批准經典缺少來源、禁止選材出現在資料、問題引用不存在的體質、版權狀態不允許發布，或內容ID失效，build會失敗。輸出位於`dist/`。
+
+## 本機 PDF 知識庫
+
+原始 PDF 放入 `knowledge_sources/pdfs/`，但 PDF 及本機全文 JSON 預設受 `.gitignore` 保護，不會公開。先在 `knowledge_sources/manifests/sources.json` 設定來源；版權不明必須保持 `rightsStatus: "unknown"` 及 `publishable: false`。
+
+```bash
+npm run ingest:pdf
+npm run ingest:pdf -- --file knowledge_sources/pdfs/example.pdf
+npm run convert:traditional
+npm run validate:knowledge
+npm run build:knowledge-index
+```
+
+流程優先讀取文字層並保存 PDF 頁碼、段落次序、檔名、SHA-256、擷取方法、匯入日期及工具版本。沒有有效文字層的頁面標記為待 OCR；選配本機 OCR 的 Windows 安裝方法見 [`knowledge_sources/pdfs/README.md`](knowledge_sources/pdfs/README.md)。流程不用 OpenAI、Gemini、Claude、雲端 OCR 或任何 API Key。
+
+每段同時保留 `originalTextSimplified`（介面：簡體底本）及 `textTraditional`（介面：繁體轉寫）。OpenCC 使用香港繁體 `s2hk`，再套用 `knowledge_sources/conversion-glossary/tcm-s2hk.json` 的可審核中醫詞表。
+
+Production 只輸出同時符合 `publishable === true`、版權為 public-domain／licensed／user-owned、且 `reviewStatus === "approved"` 的條目。搜尋索引只有短預覽；完整內容按書籍拆成小 JSON，使用者搜尋並選取後才 lazy-load。未審核 OCR、未知版權及 draft 只留本機，不進入公開 Build。
+
+## Formula Library
+
+固定配伍位於 `src/data/formulas/`。每項必須有唯一 ID、3–6 味固定選材、角色與原因、必要回答組合、排除條件、來源、藥物安全欄位、版本及審核日期。規則引擎只選 approved Formula，絕不從 PDF 關鍵字自動組方。產品設定規則必須清楚標示，不得冒充古方或名家原方；份量只有在 `doseReviewed`、`sourceVerified` 及 `approved` 全部成立時顯示。
 
 ## 部署至GitHub Pages
+
+🌐 **目前線上版本：** https://sion-rgb.github.io/bencao-neijing-tiaoyang/
 
 1. 把本專案推送至GitHub repository。
 2. 在Repository的 **Settings → Pages**，把Source設為 **GitHub Actions**。
@@ -60,7 +94,7 @@ npm run build
 - Framework preset：`Vite`
 - Build command：`npm run build`
 - Build output directory：`dist`
-- Node.js version：20或以上
+- Node.js version：22.13或以上
 
 不需要環境變數、Functions、D1、R2或伺服器。
 
@@ -126,3 +160,7 @@ npm run import:classics -- path/to/classics.json
 - 完整說明文件：`docs/disclaimer.md`
 
 修改後須同時檢查首次確認頁、結果頁與使用須知頁，意思不可削弱。應交由法律與醫療安全專業人士覆核後才發布。
+
+---
+
+🌐 [線上使用本草內經・體質調養](https://sion-rgb.github.io/bencao-neijing-tiaoyang/) ・ [查看GitHub原始碼](https://github.com/sion-rgb/bencao-neijing-tiaoyang)

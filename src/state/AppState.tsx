@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { AnswerMap, StoredState } from "../types";
+import { pruneHiddenSafetyAnswers } from "../data/safety/safetyQuestions";
 import { clearAllLocalData, EMPTY_STATE, loadState, saveState } from "../utils/storage";
 
 type AppStateContextValue = {
@@ -23,7 +24,10 @@ export function AppStateProvider({ children }: { children: ReactNode }) {
   }, [state]);
 
   const setConsent = useCallback((consent: boolean) => setState((current) => ({ ...current, consent })), []);
-  const setSafetyAnswer = useCallback((questionId: string, optionIds: string[]) => setState((current) => ({ ...current, safetyAnswers: { ...current.safetyAnswers, [questionId]: optionIds } })), []);
+  const setSafetyAnswer = useCallback((questionId: string, optionIds: string[]) => setState((current) => ({
+    ...current,
+    safetyAnswers: pruneHiddenSafetyAnswers({ ...current.safetyAnswers, [questionId]: optionIds })
+  })), []);
   const setQuestionnaireAnswer = useCallback((questionId: string, optionIds: string[]) => setState((current) => ({ ...current, questionnaireAnswers: { ...current.questionnaireAnswers, [questionId]: optionIds } })), []);
   const setCurrentStep = useCallback((currentStep: number) => setState((current) => current.currentStep === currentStep ? current : ({ ...current, currentStep })), []);
   const resetQuestionnaire = useCallback(() => setState((current) => ({ ...current, questionnaireAnswers: {}, currentStep: 0 })), []);
